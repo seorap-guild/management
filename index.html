@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서랍길드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0f14;--s1:#141720;--s2:#1c2030;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text:#dde1ed;--t2:#8490aa;--t3:#4a5268;
+  --blue:#5b8af5;--blue2:#3d6be0;
+  --green:#3ecf8e;--red:#f06565;--gold:#f5c842;--purple:#9b7ff5;--teal:#2dd4bf;
+  --green-bg:rgba(62,207,142,0.08);--red-bg:rgba(240,101,101,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;min-height:100vh}
+
+.nav{background:var(--s1);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;height:52px;position:sticky;top:0;z-index:50;gap:4px}
+.nav-logo{font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-right:20px;white-space:nowrap}
+.nav-tab{height:52px;padding:0 14px;display:flex;align-items:center;font-size:13px;color:var(--t2);border:none;background:none;cursor:pointer;font-family:'Noto Sans KR',sans-serif;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.on{color:var(--blue);border-bottom-color:var(--blue)}
+
+.page{display:none;padding:24px;max-width:1200px;margin:0 auto}
+.page.on{display:block}
+
+/* 대결 버튼 바 */
+.battle-bar-wrap{overflow-x:auto;margin-bottom:22px;padding-bottom:2px}
+.battle-bar{display:flex;gap:8px;width:max-content}
+.battle-btn{
+  height:36px;padding:0 16px;
+  background:var(--s1);border:1px solid var(--border2);
+  color:var(--t2);border-radius:8px;
+  font-size:13px;font-family:'Noto Sans KR',sans-serif;
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+  display:flex;align-items:center;gap:6px
+}
+.battle-btn:hover{border-color:var(--blue);color:var(--text)}
+.battle-btn.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.btag{font-size:10px;padding:2px 7px;border-radius:12px;font-weight:500}
+.btag-tobul{background:rgba(155,127,245,.2);color:var(--purple)}
+.btag-daehang{background:rgba(45,212,191,.15);color:var(--teal)}
+.btag-boss{background:rgba(245,200,66,.15);color:var(--gold)}
+.battle-btn.on .btag-tobul,.battle-btn.on .btag-daehang{background:rgba(255,255,255,.2);color:#fff}
+.btn-add-battle{border-style:dashed;color:var(--t3)}
+.btn-add-battle:hover{color:var(--text);border-color:var(--border2)}
+
+/* 요약 칩 */
+.summary-row{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.chip{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:11px 16px;min-width:100px}
+.chip-label{font-size:11px;color:var(--t3);margin-bottom:5px}
+.chip-val{font-family:'Noto Sans KR',sans-serif;font-size:20px;font-weight:700}
+
+/* 결과 테이블 */
+.result-panel{background:var(--s1);border:1px solid var(--border);border-radius:13px;overflow:hidden}
+.rp-head{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.rp-title{font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px}
+.tag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500}
+.tag-tobul{background:rgba(155,127,245,.15);color:var(--purple);border:1px solid rgba(155,127,245,.28)}
+.tag-daehang{background:rgba(45,212,191,.12);color:var(--teal);border:1px solid rgba(45,212,191,.28)}
+.tag-boss{background:rgba(245,200,66,.12);color:var(--gold);border:1px solid rgba(245,200,66,.28)}
+.tag-training{background:rgba(62,207,142,.1);color:var(--green);border:1px solid rgba(62,207,142,.28)}
+.btag-training{background:rgba(62,207,142,.15);color:var(--green)}
+
+.row-head{display:grid;grid-template-columns:58px 52px 1fr 64px 70px;padding:9px 18px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border)}
+.row{display:grid;grid-template-columns:58px 52px 1fr 64px 70px;border-bottom:1px solid var(--border);transition:background .1s}
+.row:last-child{border-bottom:none}
+.row:hover{filter:brightness(1.12)}
+.row.rpos{background:var(--green-bg);border-left:3px solid var(--green)}
+.row.rneg{background:var(--red-bg);border-left:3px solid var(--red)}
+.row.rzero{border-left:3px solid transparent}
+.cell{padding:11px 18px;display:flex;align-items:center;font-size:13px}
+.cell:first-child{padding-left:15px}
+.cn{font-family:'Noto Sans KR',sans-serif;font-size:12px;color:var(--t3)}
+.cr{font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;color:var(--t2)}
+.cr.top3{color:var(--gold)}
+.cdiff{font-size:11px;font-family:'Space Grotesk',sans-serif}
+.cscore{justify-content:flex-end}
+.sv{font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700}
+.sv.pos{color:var(--green)}.sv.neg{color:var(--red)}.sv.zero{color:var(--t3)}
+
+/* 공통 버튼 */
+.btn{background:var(--s2);border:1px solid var(--border2);color:var(--text);padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .15s}
+.btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn-prim{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn-prim:hover{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.btn-sm{padding:5px 11px;font-size:12px}
+.btn-danger{border-color:rgba(240,101,101,.35);color:var(--red)}
+.btn-danger:hover{background:rgba(240,101,101,.1);border-color:var(--red)}
+.sec-title{font-size:13px;color:var(--t2);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.sec-title::before{content:'';width:3px;height:13px;background:var(--blue);border-radius:2px;display:block}
+
+/* 입력 페이지 */
+.battle-grid{display:flex;flex-direction:column;gap:12px}
+.battle-panel{background:var(--s1);border:1px solid var(--border);border-radius:13px;overflow:hidden}
+/* 점수 입력 테이블 */
+.score-table{width:100%;border-collapse:collapse}
+.score-table-head{display:grid;grid-template-columns:44px 1fr 110px;padding:8px 16px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border)}
+.score-row{display:grid;grid-template-columns:44px 1fr 110px;padding:7px 16px;align-items:center;border-bottom:1px solid var(--border);transition:background .1s}
+.score-row:last-child{border-bottom:none}
+.score-row:hover{background:var(--s2)}
+.score-row.has-score.pos-row{background:var(--green-bg)}
+.score-row.has-score.neg-row{background:var(--red-bg)}
+.sinput{background:var(--s2);border:1px solid var(--border2);color:var(--text);padding:8px 12px;border-radius:8px;font-size:14px;font-family:'Noto Sans KR',sans-serif;width:100%;text-align:right;outline:none;-moz-appearance:textfield;transition:border-color .15s}
+.sinput::-webkit-outer-spin-button,.sinput::-webkit-inner-spin-button{-webkit-appearance:none}
+.sinput:focus{border-color:var(--blue);background:var(--s3)}
+.panel-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.panel-head:hover{background:rgba(255,255,255,0.02)}
+.panel-head-title{font-size:13px;font-weight:500;display:flex;align-items:center;gap:7px}
+.panel-head-left{display:flex;align-items:center;gap:8px;flex:1}
+.collapse-arrow{font-size:11px;color:var(--t3);transition:transform .2s}
+.battle-panel.collapsed .collapse-arrow{transform:rotate(-90deg)}
+.battle-panel.collapsed .slots{display:none}
+.battle-panel.collapsed .panel-head{border-bottom:none}
+.slots{padding:6px 10px}
+.slot{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:7px;cursor:pointer;transition:background .1s;border:1px solid transparent;margin-bottom:2px}
+.slot:hover{background:var(--s2);border-color:var(--border)}
+.slot.filled:hover{border-color:var(--blue)}
+.snum{font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;color:var(--t3);width:20px;text-align:right;flex-shrink:0}
+.snum.top3{color:var(--gold)}
+.sname{font-size:13px;flex:1}
+.sempty{font-size:12px;color:var(--t3)}
+.sscore{font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;margin-left:auto;flex-shrink:0}
+.sscore.pos{color:var(--green)}.sscore.neg{color:var(--red)}.sscore.zero{color:var(--t3)}
+.boss-score-input{
+  width:58px;background:var(--s2);border:1px solid var(--border2);
+  color:var(--teal);font-size:11px;border-radius:5px;padding:2px 5px;
+  text-align:right;outline:none;flex-shrink:0;font-family:'Noto Sans KR',sans-serif;
+}
+.boss-score-input:focus{border-color:var(--teal)}
+.sclear{background:none;border:none;color:var(--t3);cursor:pointer;font-size:13px;padding:0 2px;flex-shrink:0}
+.sclear:hover{color:var(--red)}
+.power-input{background:var(--s2);border:1px solid var(--border2);color:var(--text);padding:8px 12px;border-radius:8px;font-size:14px;font-family:'Noto Sans KR',sans-serif;width:90px;text-align:right;outline:none;transition:border-color .15s}
+.power-input:focus{border-color:var(--blue);background:var(--s3)}
+
+/* 대결 추가 폼 */
+.add-form{background:var(--s1);border:1px solid var(--border);border-radius:11px;padding:18px;margin-bottom:18px;display:none}
+.add-form.open{display:block}
+.form-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.fg{display:flex;flex-direction:column;gap:5px}
+.flabel{font-size:12px;color:var(--t2)}
+.finput,.fsel{background:var(--s2);border:1px solid var(--border2);color:var(--text);padding:7px 12px;border-radius:8px;font-size:13px;font-family:'Noto Sans KR',sans-serif;outline:none}
+.finput:focus,.fsel:focus{border-color:var(--blue)}
+.fsel option{background:#1c2030}
+
+/* 모달 */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--s1);border:1px solid var(--border2);border-radius:15px;width:320px;max-height:76vh;display:flex;flex-direction:column}
+.modal-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:14px;font-weight:500}
+.modal-close{background:none;border:none;color:var(--t2);cursor:pointer;font-size:19px;line-height:1}
+.modal-search{padding:9px 14px;border-bottom:1px solid var(--border)}
+.modal-search input{width:100%;background:var(--s2);border:1px solid var(--border2);color:var(--text);padding:7px 11px;border-radius:7px;font-size:13px;font-family:'Noto Sans KR',sans-serif;outline:none}
+.modal-list{overflow-y:auto;flex:1;padding:6px}
+.mitem{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:8px;cursor:pointer;transition:background .1s}
+.mitem:hover{background:var(--s2)}
+.mitem.used{opacity:.28;pointer-events:none}
+.mitem.sel{background:rgba(91,138,245,.15)}
+.mrank{font-size:11px;color:var(--t3);width:32px;font-family:'Space Grotesk',sans-serif}
+.mname{font-size:14px;flex:1}
+
+/* 멤버 관리 */
+.member-table{background:var(--s1);border:1px solid var(--border);border-radius:13px;overflow:hidden}
+.mt-head,.mt-row{display:grid;grid-template-columns:56px 1fr 160px;align-items:center;padding:10px 16px;gap:10px}
+.mt-head{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border)}
+.mt-row{border-bottom:1px solid var(--border);transition:background .1s}
+.mt-row:last-child{border-bottom:none}
+.mt-row:hover{background:var(--s2)}
+.name-edit{background:transparent;border:none;color:var(--text);font-size:14px;font-family:'Noto Sans KR',sans-serif;width:100%;outline:none}
+
+/* 달력 모달 */
+.cal-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:300;display:none;align-items:center;justify-content:center}
+.cal-modal-bg.open{display:flex}
+.cal-box{background:var(--s1);border:1px solid var(--border2);border-radius:16px;width:300px;padding:20px}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cal-title{font-size:15px;font-weight:600;font-family:"Space Grotesk",sans-serif}
+.cal-nav{background:none;border:none;color:var(--t2);cursor:pointer;font-size:18px;padding:4px 8px;border-radius:6px;line-height:1}
+.cal-nav:hover{background:var(--s2);color:var(--text)}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px}
+.cal-wd{text-align:center;font-size:11px;color:var(--t3);padding:4px 0}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;cursor:pointer;font-family:"Noto Sans KR",sans-serif;border:none;background:none;color:var(--text);transition:background .1s}
+.cal-day:hover{background:var(--s2)}
+.cal-day.today{border:1px solid var(--blue);color:var(--blue)}
+.cal-day.selected{background:var(--blue);color:#fff}
+.cal-day.empty{cursor:default}
+.cal-type-row{display:flex;gap:8px;margin-top:16px;margin-bottom:16px}
+.cal-type-btn{flex:1;padding:9px;border-radius:9px;border:1px solid var(--border2);background:var(--s2);color:var(--t2);font-size:13px;font-family:"Noto Sans KR",sans-serif;cursor:pointer;transition:all .15s;font-weight:500}
+.cal-type-btn:hover{border-color:var(--blue);color:var(--text)}
+.cal-type-btn.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.cal-confirm{width:100%;padding:10px;border-radius:9px;background:var(--blue);border:none;color:#fff;font-size:14px;font-family:"Noto Sans KR",sans-serif;cursor:pointer;font-weight:500}
+.cal-confirm:hover{background:var(--blue2)}
+
+
+/* 기준치 페이지 */
+.std-section{background:var(--s1);border:1px solid var(--border);border-radius:13px;overflow:hidden;margin-bottom:20px}
+.std-section-head{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.std-section-title{font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px}
+.std-row-head{display:grid;grid-template-columns:36px 1fr 120px 100px 80px;padding:9px 18px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border)}
+.std-row{display:grid;grid-template-columns:36px 1fr 120px 100px 80px;padding:10px 18px;align-items:center;border-bottom:1px solid var(--border);transition:background .1s}
+.std-row:last-child{border-bottom:none}
+.std-row:hover{background:var(--s2)}
+.std-input{background:var(--s2);border:1px solid var(--border2);color:var(--text);padding:5px 8px;border-radius:7px;font-size:13px;font-family:'Noto Sans KR',sans-serif;width:80px;text-align:right;outline:none}
+.std-input:focus{border-color:var(--blue)}
+.btn-minus{width:26px;height:26px;border-radius:50%;background:rgba(240,101,101,.12);border:1px solid rgba(240,101,101,.3);color:var(--red);font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.btn-minus:hover{background:rgba(240,101,101,.25);border-color:var(--red)}
+/* 범위 추가 모달 */
+.range-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:300;display:none;align-items:center;justify-content:center}
+.range-modal-bg.open{display:flex}
+.range-box{background:var(--s1);border:1px solid var(--border2);border-radius:16px;width:340px;padding:24px}
+.range-title{font-size:15px;font-weight:600;margin-bottom:20px}
+.range-group{margin-bottom:18px}
+.range-group-label{font-size:12px;color:var(--t2);margin-bottom:8px}
+.range-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.range-num{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--text);width:60px;text-align:center}
+.range-slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:var(--s2);outline:none;cursor:pointer}
+.range-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--blue);cursor:pointer;border:2px solid var(--bg)}
+.range-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--blue);cursor:pointer;border:2px solid var(--bg)}
+.range-divider{text-align:center;font-size:18px;color:var(--t3);margin:4px 0 12px}
+.range-score-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+/* 비밀번호 모달 */
+.pw-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.pw-modal-bg.open{display:flex}
+.pw-box{background:var(--s1);border:1px solid var(--border2);border-radius:18px;width:100%;max-width:320px;padding:32px 28px 28px;text-align:center;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.pw-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--t3);font-size:20px;cursor:pointer;line-height:1;padding:4px}
+.pw-close:hover{color:var(--text)}
+.pw-icon{font-size:36px;margin-bottom:14px}
+.pw-title{font-size:17px;font-weight:700;margin-bottom:5px}
+.pw-sub{font-size:12px;color:var(--t3);margin-bottom:22px}
+.pw-input{width:100%;background:var(--s2);border:1px solid var(--border2);color:var(--text);padding:12px 14px;border-radius:10px;font-size:22px;text-align:center;letter-spacing:10px;outline:none;margin-bottom:8px}
+.pw-input:focus{border-color:var(--blue)}
+.pw-error{font-size:12px;color:var(--red);height:18px;margin-bottom:14px;min-height:18px}
+.pw-btn{width:100%;padding:12px;border-radius:10px;background:var(--blue);border:none;color:#fff;font-size:14px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;font-weight:500;transition:background .15s}
+.pw-btn:hover{background:var(--blue2)}
+
+/* 알림 모달 */
+.alert-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:400;display:none;align-items:center;justify-content:center;padding:20px}
+.alert-modal-bg.open{display:flex}
+.alert-box{background:var(--s1);border:1px solid var(--border2);border-radius:16px;width:100%;max-width:300px;padding:28px 24px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.alert-icon{font-size:32px;margin-bottom:12px}
+.alert-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.alert-msg{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:22px;white-space:pre-line}
+.alert-btn{width:100%;padding:11px;border-radius:9px;background:var(--blue);border:none;color:#fff;font-size:14px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;font-weight:500}
+.alert-btn:hover{background:var(--blue2)}
+
+/* 토스트 */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--green);color:#061a0e;padding:10px 20px;border-radius:9px;font-weight:500;font-size:13px;opacity:0;transition:all .22s;z-index:999;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:640px){
+  .page{padding:12px}
+  .nav{padding:0 12px}
+  .nav-logo{font-size:14px;margin-right:10px}
+  .nav-tab{padding:0 10px;font-size:12px}
+  .battle-grid{grid-template-columns:1fr}
+  .row-head,.row{grid-template-columns:46px 1fr 70px 90px}
+  .hide-m{display:none}
+  .mt-head,.mt-row{grid-template-columns:44px 1fr auto}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .score-table-head,.score-row{grid-template-columns:38px 38px 1fr 64px 80px 56px}
+  .std-row-head,.std-row{grid-template-columns:32px 1fr 90px 80px 56px}
+  .summary-row{gap:8px}
+  .chip{min-width:80px;padding:10px 12px}
+  .pw-box{padding:28px 20px 24px}
+}
+</style>
+<!-- Firebase compat SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+</head>
+<body>
+
+<!-- 로딩 화면 -->
+<div id="loading-screen" style="position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:16px">
+  <svg width="40" height="40" viewBox="0 0 22 22" fill="none">
+    <rect x="1" y="1" width="20" height="20" rx="3" fill="#7B4F2E" stroke="#5C3A1E" stroke-width="1.2"/>
+    <rect x="3" y="3" width="16" height="7" rx="1.5" fill="#A0673A"/>
+    <rect x="3" y="12" width="16" height="7" rx="1.5" fill="#A0673A"/>
+    <rect x="9" y="5.5" width="4" height="2" rx="1" fill="#C89060"/>
+    <rect x="9" y="14.5" width="4" height="2" rx="1" fill="#C89060"/>
+  </svg>
+  <div style="color:var(--t2);font-size:14px">서랍길드 데이터 불러오는 중...</div>
+</div>
+
+<nav class="nav">
+  <div class="nav-logo" style="display:flex;align-items:center;gap:7px"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+  <rect x="1" y="1" width="20" height="20" rx="3" fill="#7B4F2E" stroke="#5C3A1E" stroke-width="1.2"/>
+  <rect x="3" y="3" width="16" height="7" rx="1.5" fill="#A0673A"/>
+  <rect x="3" y="12" width="16" height="7" rx="1.5" fill="#A0673A"/>
+  <rect x="9" y="5.5" width="4" height="2" rx="1" fill="#C89060"/>
+  <rect x="9" y="14.5" width="4" height="2" rx="1" fill="#C89060"/>
+</svg> 서랍길드</div>
+  <button class="nav-tab on" onclick="goPage('dashboard')">📊 현황판</button>
+  <button class="nav-tab" onclick="goPage('entry')">✏️ 결과 입력</button>
+  <button class="nav-tab" onclick="goPage('members')">👥 길드원</button>
+  <button class="nav-tab" onclick="goPage('standard')">🎯 기준치</button>
+</nav>
+
+<div id="page-dashboard" class="page on"></div>
+<div id="page-entry" class="page"></div>
+<div id="page-members" class="page"></div>
+<div id="page-standard" class="page"></div>
+
+<div class="modal-bg" id="modal-bg" onclick="bgClick(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modal-title">길드원 선택</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-search"><input type="text" id="modal-search" placeholder="이름 검색..." oninput="renderModalList()"></div>
+    <div class="modal-list" id="modal-list"></div>
+  </div>
+</div>
+
+<!-- 달력 모달 -->
+<div class="cal-modal-bg" id="cal-modal-bg" onclick="calBgClick(event)">
+  <div class="cal-box">
+    <div class="cal-header">
+      <button class="cal-nav" onclick="calMove(-1)">&#8249;</button>
+      <div class="cal-title" id="cal-title"></div>
+      <button class="cal-nav" onclick="calMove(1)">&#8250;</button>
+    </div>
+    <div class="cal-weekdays">
+      <div class="cal-wd" style="color:#f06565">일</div>
+      <div class="cal-wd">월</div><div class="cal-wd">화</div><div class="cal-wd">수</div>
+      <div class="cal-wd">목</div><div class="cal-wd">금</div>
+      <div class="cal-wd" style="color:#5b8af5">토</div>
+    </div>
+    <div class="cal-days" id="cal-days"></div>
+    <div class="cal-type-row" style="flex-wrap:wrap">
+      <button class="cal-type-btn on" id="cal-type-tobul" onclick="calSelType('토벌전')">토벌전</button>
+      <button class="cal-type-btn" id="cal-type-daehang" onclick="calSelType('대항전')">대항전</button>
+      <button class="cal-type-btn" id="cal-type-boss" onclick="calSelType('길드보스')">길드보스</button>
+      <button class="cal-type-btn" id="cal-type-training" onclick="calSelType('수련장')">수련장</button>
+    </div>
+    <button class="cal-confirm" onclick="calConfirm()">추가</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- 길드원 추가 모달 -->
+<div class="modal-bg" id="addmember-bg" onclick="if(event.target===this)closeAddMember()">
+  <div class="modal" style="width:300px">
+    <div class="modal-head">
+      <div class="modal-title">길드원 추가</div>
+      <button class="modal-close" onclick="closeAddMember()">✕</button>
+    </div>
+    <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+      <div class="fg">
+        <label class="flabel">닉네임</label>
+        <input class="finput" id="addm-name" placeholder="닉네임 입력"
+          style="width:100%" onkeydown="if(event.key==='Enter')document.getElementById('addm-power').focus()">
+      </div>
+      <div class="fg">
+        <label class="flabel">전투력 (조)</label>
+        <div style="display:flex;align-items:center;gap:8px">
+          <input class="finput" type="text" inputmode="decimal" id="addm-power" placeholder="0.0"
+            style="flex:1;text-align:right" onkeydown="if(event.key==='Enter')confirmAddMember()">
+          <span style="font-size:13px;color:var(--t2);flex-shrink:0">조</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;padding:0 20px 20px">
+      <button class="btn" style="flex:1" onclick="closeAddMember()">취소</button>
+      <button class="btn btn-prim" style="flex:1" onclick="confirmAddMember()">추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- 비밀번호 모달 -->
+<div class="pw-modal-bg" id="pw-modal-bg">
+  <div class="pw-box">
+    <button class="pw-close" onclick="closePwModal()">✕</button>
+    <div class="pw-icon">🔒</div>
+    <div class="pw-title">관리자 인증</div>
+    <div class="pw-sub">관리자만 접근할 수 있어요</div>
+    <input class="pw-input" type="password" id="pw-input" maxlength="10" placeholder="••••"
+      onkeydown="if(event.key==='Enter')checkPw()">
+    <div class="pw-error" id="pw-error"></div>
+    <button class="pw-btn" onclick="checkPw()">확인</button>
+  </div>
+</div>
+
+<!-- 범위 추가 모달 -->
+<div class="range-modal-bg" id="range-modal-bg" onclick="if(event.target===this)closeRangeModal()">
+  <div class="range-box">
+    <div class="range-title">📐 기준치 범위 추가</div>
+    <div class="range-group">
+      <div class="range-group-label">최소 투력 (조)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <input type="text" inputmode="decimal" class="std-input" id="rm-min-edit" value="0" placeholder="0"
+          style="width:90px" oninput="syncSlider('min',this.value)">
+        <span style="font-size:12px;color:var(--t2)">조</span>
+      </div>
+      <input type="range" class="range-slider" id="rm-min" min="0" max="9999" step="1" value="0"
+        oninput="syncEdit('min',this.value)">
+    </div>
+    <div class="range-divider">~</div>
+    <div class="range-group">
+      <div class="range-group-label">최대 투력 (조) — 9999 입력 시 ∞</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <input type="text" inputmode="decimal" class="std-input" id="rm-max-edit" value="100" placeholder="9999=∞"
+          style="width:90px" oninput="syncSlider('max',this.value)">
+        <span style="font-size:12px;color:var(--t2)">조</span>
+      </div>
+      <input type="range" class="range-slider" id="rm-max" min="0" max="9999" step="1" value="100"
+        oninput="syncEdit('max',this.value)">
+    </div>
+    <div class="range-group">
+      <div class="range-group-label">기준 점수</div>
+      <div class="range-score-row">
+        <input type="text" inputmode="decimal" class="std-input" id="rm-score" placeholder="0" style="width:100px">
+        <span style="font-size:13px;color:var(--t2)">억</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:20px">
+      <button class="btn" style="flex:1" onclick="closeRangeModal()">취소</button>
+      <button class="btn btn-prim" style="flex:1" onclick="confirmAddRange()">추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- 알림 모달 -->
+<div class="alert-modal-bg" id="alert-modal-bg">
+  <div class="alert-box">
+    <div class="alert-icon" id="alert-icon">⚠️</div>
+    <div class="alert-title" id="alert-title"></div>
+    <div class="alert-msg" id="alert-msg"></div>
+    <button class="alert-btn" onclick="closeAlert()">닫기</button>
+  </div>
+</div>
+
+<!-- 확인 모달 -->
+<div class="modal-bg" id="confirm-bg">
+  <div class="modal" style="width:300px">
+    <div class="modal-head" style="border-bottom:none;padding-bottom:4px">
+      <div class="modal-title">⚠️ 삭제 확인</div>
+    </div>
+    <div id="confirm-msg" style="padding:0 20px 16px;font-size:14px;color:var(--t2);line-height:1.6"></div>
+    <div style="display:flex;gap:8px;padding:0 20px 18px;justify-content:flex-end">
+      <button class="btn btn-sm" onclick="confirmCancel()">취소</button>
+      <button class="btn btn-sm btn-danger" onclick="confirmOk()">삭제</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  FIREBASE 초기화 (compat 버전 - 전역 함수 호환)
+// ══════════════════════════════════════════════
+let fbLoaded = false;
+let db, dataRef;
+
+function fbInit(){
+  const firebaseConfig = {
+    apiKey: "AIzaSyBblN83l2MizIR1nZ5xoanyrduenjVBGc4",
+    authDomain: "seorap-guild.firebaseapp.com",
+    databaseURL: "https://seorap-guild-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "seorap-guild",
+    storageBucket: "seorap-guild.firebasestorage.app",
+    messagingSenderId: "290579191056",
+    appId: "1:290579191056:web:d003d242226525889a8195"
+  };
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+  dataRef = db.ref('guildData');
+
+  dataRef.on('value', (snapshot)=>{
+    // 내가 직접 저장한 직후엔 무시 (불필요한 재렌더 방지)
+    if(_saveCount > 0){ _saveCount--; return; }
+    const data = snapshot.val();
+    if(data){
+      S = data;
+      if(S.members) S.members.forEach(m=>{
+        if(m.power!==undefined) m.power=parseFloat(m.power)||0;
+        if(m.prevPower!==undefined) m.prevPower=parseFloat(m.prevPower)||0;
+      });
+      // Firebase는 배열을 객체로 변환 → 다시 배열로 복원
+      if(S.members && !Array.isArray(S.members))
+        S.members = Object.values(S.members);
+      if(S.battles && !Array.isArray(S.battles))
+        S.battles = Object.values(S.battles);
+      if(S.battles) S.battles.forEach(bt=>{
+        if(bt.result && !Array.isArray(bt.result))
+          bt.result = Object.values(bt.result);
+      });
+      if(S.standards){
+        if(!Array.isArray(S.standards)){
+          Object.keys(S.standards).forEach(type=>{
+            if(S.standards[type] && !Array.isArray(S.standards[type]))
+              S.standards[type] = Object.values(S.standards[type]);
+          });
+        }
+      } else {
+        S.standards={};
+      }
+    } else {
+      seed();
+      fbSave();
+    }
+    if(!fbLoaded){
+      fbLoaded = true;
+      renderAll();
+      document.getElementById('loading-screen').style.display='none';
+    } else {
+      // 다른 기기에서 변경된 경우만 재렌더
+      renderAll();
+    }
+  }, (error)=>{
+    console.error('FB load error', error);
+    loadLocal();
+    document.getElementById('loading-screen').style.display='none';
+  });
+}
+
+let _saveCount = 0;
+function fbSave(){
+  try{
+    if(dataRef){
+      _saveCount++;
+      dataRef.set(JSON.parse(JSON.stringify(S)));
+    }
+  }catch(e){ console.error('FB save error',e); if(_saveCount>0)_saveCount--; }
+}
+
+// ══════════════════════════════════════════════
+//  STATE  — 주차 개념 없음, battles 플랫 배열
+// ══════════════════════════════════════════════
+let S = {
+  members: [], // 투력순위 = 인덱스+1
+  battles: [], // [{id, date, type, result:[name|null x30]}]
+  currentId: null,
+  standards: {} // {type: [{label, minPower, maxPower, score}]}
+};
+
+function seed() {
+  S.members = [
+    {name:"블런블",prevPower:1076,prevPowerDate:"05/27",power:1479,powerDate:"06/03"},
+    {name:"니시스",prevPower:167,prevPowerDate:"05/27",power:231,powerDate:"06/03"},
+    {name:"v지원v",prevPower:141,prevPowerDate:"05/27",power:262,powerDate:"06/03"},
+    {name:"천이스",prevPower:64,prevPowerDate:"05/27",power:84,powerDate:"06/03"},
+    {name:"너웅",prevPower:34,prevPowerDate:"05/27",power:45,powerDate:"06/03"},
+    {name:"미래팝",prevPower:31,prevPowerDate:"05/27",power:38,powerDate:"06/03"},
+    {name:"짠도현",prevPower:18.1,prevPowerDate:"05/27",power:28,powerDate:"06/03"},
+    {name:"씨엔쿤",prevPower:16,prevPowerDate:"05/27",power:17,powerDate:"06/03"},
+    {name:"매미공주",prevPower:15.2,prevPowerDate:"05/27",power:24,powerDate:"06/03"},
+    {name:"굶은",prevPower:13.3,prevPowerDate:"05/27",power:15,powerDate:"06/03"},
+    {name:"이중찬",prevPower:12.8,prevPowerDate:"05/27",power:16,powerDate:"06/03"},
+    {name:"김치감자",prevPower:12,prevPowerDate:"05/27",power:18,powerDate:"06/03"},
+    {name:"차단상태",prevPower:9.8,prevPowerDate:"05/27",power:17,powerDate:"06/03"},
+    {name:"세롱이",prevPower:9.3,prevPowerDate:"05/27",power:12,powerDate:"06/03"},
+    {name:"망치깎는노인",prevPower:8.8,prevPowerDate:"05/27",power:13,powerDate:"06/03"},
+    {name:"하루맨한디거",prevPower:7.9,prevPowerDate:"05/27",power:9.5,powerDate:"06/03"},
+    {name:"외외",prevPower:6.3,prevPowerDate:"05/27",power:15,powerDate:"06/03"},
+    {name:"잉디잉디",prevPower:6.2,prevPowerDate:"05/27",power:14,powerDate:"06/03"},
+    {name:"믐므르",prevPower:5.6,prevPowerDate:"05/27",power:6.7,powerDate:"06/03"},
+    {name:"루숑천사v",prevPower:5.5,prevPowerDate:"05/27",power:10,powerDate:"06/03"},
+    {name:"악테온",prevPower:5.4,prevPowerDate:"05/27",power:7.9,powerDate:"06/03"},
+    {name:"씅난당",prevPower:5,prevPowerDate:"05/27",power:14,powerDate:"06/03"},
+    {name:"상상구",prevPower:4.8,prevPowerDate:"05/27",power:5.4,powerDate:"06/03"},
+    {name:"이쿠형아",prevPower:4.6,prevPowerDate:"05/27",power:6.9,powerDate:"06/03"},
+    {name:"Blay",prevPower:3.8,prevPowerDate:"05/27",power:4.7,powerDate:"06/03"},
+    {name:"이쁜언니",prevPower:3.8,prevPowerDate:"05/27",power:5,powerDate:"06/03"},
+    {name:"윤빵쭈",prevPower:3.4,prevPowerDate:"05/27",power:4.6,powerDate:"06/03"},
+    {name:"병차니",prevPower:2.7,prevPowerDate:"05/27",power:4.9,powerDate:"06/03"},
+    {name:"나로호소",prevPower:2.5,prevPowerDate:"05/27",power:3.3,powerDate:"06/03"},
+    {name:"블런블런",prevPower:2.2,prevPowerDate:"05/27",power:3.4,powerDate:"06/03"}
+  ];
+  S.battles = [
+    { id:'b1', date:'05/27', type:'길드보스',
+      result:[
+        "블런블","v지원v","니시스","김치감자","너웅",
+        "천이스","매미공주","짠도현","씨엔쿤","세롱이",
+        "이중찬","굶은","망치깎는노인","차단상태","루숑천사v",
+        "악테온","씅난당","이쿠형아","하루맨한디거","미래팝",
+        "외외","잉디잉디","블런블런","상상구","믐므르",
+        "나로호소","병차니","윤빵쭈","Blay",null
+      ],
+      bossScores:{
+        "블런블":824,"니시스":232,"v지원v":250,"천이스":120,"너웅":134,
+        "미래팝":71,"짠도현":95,"씨엔쿤":92,"매미공주":103,"굶은":63,
+        "이중찬":79,"김치감자":140,"차단상태":55,"세롱이":82,"망치깎는노인":65,
+        "하루맨한디거":43,"외외":38,"잉디잉디":39,"믐므르":27,"루숑천사v":44,
+        "악테온":43,"씅난당":45,"상상구":42,"이쿠형아":44,"Blay":28,
+        "이쁜언니":52,"윤빵쭈":25,"병차니":37,"나로호소":27,"블런블런":39
+      }
+    },
+    { id:'b2', date:'06/03', type:'길드보스',
+      result:[
+        "블런블","v지원v","니시스","김치감자","너웅",
+        "천이스","짠도현","매미공주","씨엔쿤","차단상태",
+        "이중찬","굶은","외외","잉디잉디","씅난당",
+        "망치깎는노인","세롱이","이쿠형아","하루맨한디거","악테온",
+        "루숑천사v","이쁜언니","상상구","병차니","믐므르",
+        "Blay","블런블런","윤빵쭈","나로호소",null
+      ],
+      bossScores:{
+        "블런블":1085,"v지원v":384,"니시스":248,"천이스":131,"너웅":135,
+        "미래팝":76,"짠도현":106,"매미공주":116,"씨엔쿤":94,"차단상태":80,
+        "이중찬":81,"굶은":89,"김치감자":150,"외외":63,"잉디잉디":79,
+        "씅난당":74,"망치깎는노인":86,"세롱이":106,"루숑천사v":45,
+        "하루맨한디거":48,"악테온":46,"이쿠형아":49,"믐므르":33,"상상구":48,
+        "이쁜언니":60,"병차니":47,"Blay":42,"윤빵쭈":35,"블런블런":46,"나로호소":40
+      }
+    }
+  ];
+  S.currentId = 'b2';
+}
+
+function save(){
+  try{localStorage.setItem('seorap_v2',JSON.stringify(S))}catch(e){}
+  fbSave();
+}
+function loadLocal(){
+  try{
+    const d=localStorage.getItem('seorap_v2');
+    if(d){
+      S=JSON.parse(d);
+      S.members.forEach(m=>{
+        if(m.power!==undefined) m.power=parseFloat(m.power)||0;
+        if(m.prevPower!==undefined) m.prevPower=parseFloat(m.prevPower)||0;
+      });
+      renderAll();
+      return;
+    }
+  }catch(e){}
+  seed(); renderAll();
+}
+
+// ── helpers ──
+function pRank(name){
+  if(!S.members||!S.members.length) return null;
+  const sorted=[...S.members].sort((a,b)=>(b.power||0)-(a.power||0));
+  const i=sorted.findIndex(m=>m.name===name);
+  return i===-1?null:i+1;
+}
+function memberName(m){ return typeof m==='string'?m:m.name; }
+function score(resultRank,name){ const p=pRank(name); return p===null?0:p-resultRank; }
+function sc(s){ return s>0?'pos':s<0?'neg':'zero'; }
+function ss(s){ return s>0?'+'+s:String(s); }
+function curBattle(){ return S.battles.find(b=>b.id===S.currentId)||S.battles[0]||null; }
+function tagCls(type){ return type==='토벌전'?'tag-tobul':type==='대항전'?'tag-daehang':type==='수련장'?'tag-training':'tag-boss'; }
+function btagCls(type){ return type==='토벌전'?'btag-tobul':type==='대항전'?'btag-daehang':type==='수련장'?'btag-training':'btag-boss'; }
+
+// ══════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════
+function renderDashboard(){
+  if(!S.battles) S.battles=[];
+  if(!S.members) S.members=[];
+  const bt = curBattle();
+
+  const btns = [...S.battles].reverse().map(b=>`
+    <button class="battle-btn${b.id===S.currentId?' on':''}" onclick="selBattle('${b.id}')">
+      <span class="btag ${btagCls(b.type||'길드보스')}">${b.type||'길드보스'}</span>${b.date||''}
+    </button>`).join('') +
+    ``;
+
+  let body = `<div style="text-align:center;padding:48px;color:var(--t3)">대결을 선택하세요</div>`;
+
+  if(bt){
+    if(!bt.bossScores) bt.bossScores={};
+    if(!bt.result) bt.result=Array(30).fill(null);
+    // 투력 스냅샷 기준으로 정렬 (없으면 현재 투력 사용)
+    const snap = bt.powerSnapshot || {};
+    const getPower = (name) => { try{ return snap[name] ?? (S.members.find(m=>m.name===name)?.power||0); }catch(e){ return 0; } };
+    const memberNames = S.members.map(m=>m.name);
+    const sortedM = [...memberNames]
+      .sort((a,b)=>getPower(b)-getPower(a))
+      .map((name,i)=>({name, power:getPower(name), pr:i+1}));
+
+    const hasStd = S.standards?.[bt.type];
+    const stdAvailable = hasStd && getStandards(bt.type).some(s=>s.score>0);
+
+    // 참가자 데이터 구성
+    const rows = sortedM.map(m=>{
+      const bossScore = bt.bossScores?.[m.name] ?? null;
+      const expected = stdAvailable ? getExpectedScore(bt.type, m.power) : null;
+      const diff = (bossScore!==null && expected!==null) ? bossScore - expected : null;
+      return {name:m.name, pr:m.pr, power:m.power, bossScore, expected, diff};
+    }).filter(r=>r.bossScore!==null);
+
+    const pos = rows.filter(r=>r.diff!==null&&r.diff>0).length;
+    const neg = rows.filter(r=>r.diff!==null&&r.diff<0).length;
+    const zero = rows.filter(r=>r.diff!==null&&r.diff===0).length;
+    const maxDiff = rows.length?Math.max(...rows.map(r=>r.diff??-9999)):0;
+    const mvp = rows.find(r=>r.diff===maxDiff&&maxDiff>0);
+
+    body = `
+    <div class="summary-row">
+      <div class="chip"><div class="chip-label">기준 초과</div><div class="chip-val" style="color:var(--green)">${pos}명</div></div>
+      <div class="chip"><div class="chip-label">기준 미달</div><div class="chip-val" style="color:var(--red)">${neg}명</div></div>
+      ${mvp?`<div class="chip"><div class="chip-label">MVP</div>
+        <div class="chip-val" style="color:var(--gold);font-size:15px;padding-top:2px">${mvp.name}</div>
+        <div style="font-size:11px;color:var(--t3);margin-top:3px">+${maxDiff}억</div></div>`:''}
+    </div>
+    <div class="result-panel">
+      <div class="rp-head">
+        <div class="rp-title"><span class="tag ${tagCls(bt.type)}">${bt.type}</span>${bt.date} 결과</div>
+        <div style="font-size:12px;color:var(--t3)">${rows.length}명</div>
+      </div>
+      ${(()=>{
+        const colHead = `<div class="row-head" style="grid-template-columns:46px 1fr 80px 80px 90px">
+          <div>투력순위</div><div>닉네임</div>
+          <div style="text-align:right">기준치</div>
+          <div style="text-align:right">실제점수</div>
+          <div style="text-align:right">차이</div>
+        </div>`;
+        const makeRow = r => {
+          const rowCls = r.diff===null?'rzero':r.diff>0?'rpos':r.diff<0?'rneg':'rzero';
+          const diffStr = r.diff===null?'—':r.diff>0?'+'+r.diff+'억':r.diff+'억';
+          const diffCol = r.diff===null?'var(--t3)':r.diff>0?'var(--green)':r.diff<0?'var(--red)':'var(--t3)';
+          return `<div class="row ${rowCls}" style="grid-template-columns:46px 1fr 80px 80px 90px">
+            <div class="cell" style="font-size:12px;font-weight:700;color:var(--text);white-space:nowrap">${r.pr}위</div>
+            <div class="cell" style="gap:6px;flex-wrap:wrap">
+              <span style="font-size:13px;font-weight:500">${r.name}</span>
+              <span style="font-size:11px;font-weight:600;color:var(--text)">${fmtPower(r.power)}</span>
+            </div>
+            <div class="cell" style="justify-content:flex-end;font-size:12px;color:var(--t3)">${r.expected!==null?r.expected+'억':'—'}</div>
+            <div class="cell" style="justify-content:flex-end;font-size:12px;font-weight:500;color:var(--text)">${r.bossScore!==null?r.bossScore+'억':'—'}</div>
+            <div class="cell cscore" style="justify-content:flex-end">
+              <span style="font-size:14px;font-weight:700;color:${diffCol}">${diffStr}</span>
+            </div>
+          </div>`;
+        };
+        // 투력순위 기준 전체 정렬 후 1~15 / 16~30 분리
+        const allRows = sortedM.map(m=>{
+          const bossScore = bt.bossScores?.[m.name] ?? null;
+          const expected = stdAvailable ? getExpectedScore(bt.type, m.power) : null;
+          const diff = (bossScore!==null && expected!==null) ? bossScore - expected : null;
+          return {name:m.name, pr:m.pr, power:m.power, bossScore, expected, diff};
+        });
+        const left  = allRows.slice(0,15).map(makeRow).join('');
+        const right = allRows.slice(15,30).map(makeRow).join('');
+        return `<div style="display:grid;grid-template-columns:1fr 1fr">
+          <div style="border-right:1px solid var(--border)">${colHead}${left}</div>
+          <div>${colHead}${right}</div>
+        </div>`;
+      })()}
+      ${!stdAvailable?'<div style="padding:16px 20px;font-size:12px;color:var(--t3)">⚠️ 기준치 미설정 — 🎯 기준치 페이지에서 먼저 설정해주세요</div>':''}
+    </div>`;
+  }
+
+  document.getElementById('page-dashboard').innerHTML = `
+    <div class="battle-bar-wrap"><div class="battle-bar">${btns}</div></div>
+    ${body}`;
+}
+
+function selBattle(id){ S.currentId=id; save(); renderDashboard(); }
+
+// ══════════════════════════════════════════════
+//  ENTRY PAGE
+// ══════════════════════════════════════════════
+let MC = {battleId:null, slotIdx:null};
+let openPanels = new Set(); // 펼쳐진 패널 ID 기억
+
+function renderEntryPage(){
+  if(!S.battles) S.battles=[];
+  if(!S.members) S.members=[];
+  // 투력순위 정렬 (스냅샷 있으면 스냅샷 기준)
+  const sortedMembers = [...S.members]
+    .map(m=>({...m}))
+    .sort((a,b)=>b.power-a.power);
+
+  const panels = [...S.battles].reverse().map(bt=>{
+    const tCls = tagCls(bt.type);
+    if(!bt.bossScores) bt.bossScores={};
+    if(!bt.result) bt.result=Array(30).fill(null);
+
+    // 스냅샷 기준 투력 가져오기
+    const snap = bt.powerSnapshot || {};
+    const getPwr = (name) => snap[name] ?? (S.members.find(x=>x.name===name)?.power||0);
+    // 스냅샷 기준 투력순위 계산
+    const snapRank = (name) => {
+      const sorted = sortedMembers.map(x=>x.name).sort((a,b)=>getPwr(b)-getPwr(a));
+      const i = sorted.indexOf(name); return i===-1?null:i+1;
+    };
+    const scoreBySnap = (resultRank, name) => {
+      const pr = snapRank(name); return pr===null?0:pr-resultRank;
+    };
+    const makeRow = (m, i) => {
+      const pr = i+1;
+      const snapPower = getPwr(m.name);
+      const curPower = S.members.find(x=>x.name===m.name)?.power || snapPower;
+      const resultRank = bt.result.indexOf(m.name);
+      const hasResult = resultRank !== -1;
+      const sc_val = hasResult ? scoreBySnap(resultRank+1, m.name) : null;
+      const bsVal = bt.bossScores[m.name] ?? '';
+      const rowCls = '';
+      const inputId = bt.id+'-idx-'+i;
+      const powerInputId = bt.id+'-pw-'+i;
+      return `<div class="score-row ${rowCls}" style="grid-template-columns:44px 1fr 100px 100px">
+        <div style="font-size:12px;font-weight:700;color:var(--text)">${pr}위</div>
+        <div style="font-size:13px;font-weight:500">${m.name}</div>
+        <div style="display:flex;align-items:center;gap:3px;margin-right:2px">
+          <input type="text" inputmode="decimal" class="sinput" id="${powerInputId}"
+            value="" placeholder="${snapPower||''}"
+            style="color:#fff"
+            onkeydown="if(event.key==='Enter')saveEntryScore('${bt.id}','${m.name}',this.value)">
+          <span style="font-size:10px;color:var(--t2);flex-shrink:0">조</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:3px;margin-left:2px">
+          <input type="text" inputmode="decimal" class="sinput" id="${inputId}"
+            value="${bsVal}" placeholder="0"
+            style="color:#fff"
+            onkeydown="if(event.key==='Enter')saveEntryScore('${bt.id}','${m.name}',this.value)">
+          <span style="font-size:10px;color:var(--t2);flex-shrink:0">억</span>
+        </div>
+      </div>`;
+    };
+    const colHead = `<div class="score-table-head" style="grid-template-columns:44px 1fr 100px 100px">
+      <div>투력순위</div><div>길드원</div>
+      <div style="text-align:right">전투력(조)</div>
+      <div style="text-align:right">보스점수</div>
+    </div>`;
+    const left  = sortedMembers.slice(0,15).map((m,i)=>makeRow(m,i)).join('');
+    const right = sortedMembers.slice(15,30).map((m,i)=>makeRow(m,i+15)).join('');
+
+    const filledCount = sortedMembers.filter(m=>bt.result.indexOf(m.name)!==-1).length;
+    const isOpen = openPanels.has(bt.id);
+    return `<div class="battle-panel${isOpen?'':' collapsed'}" id="panel-${bt.id}">
+      <div class="panel-head" onclick="togglePanel('${bt.id}')">
+        <div class="panel-head-left">
+          <span class="collapse-arrow">▼</span>
+          <div class="panel-head-title"><span class="tag ${tCls}">${bt.type}</span>${bt.date}</div>
+          <span style="font-size:11px;color:var(--t3)">${filledCount}/${sortedMembers.length}</span>
+        </div>
+        <button class="btn btn-sm btn-danger" onclick="deleteBattle(event,'${bt.id}','${bt.date}','${bt.type}')">삭제</button>
+      </div>
+      <div class="slots" style="padding:0">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:none">
+          <div style="border-right:1px solid var(--border)">${colHead}${left}</div>
+          <div>${colHead}${right}</div>
+        </div>
+      </div>
+      <div style="padding:14px 18px;border-top:1px solid var(--border);display:flex;justify-content:flex-end">
+        <button class="btn btn-prim" onclick="saveAllEntryScores('${bt.id}')">✓ 저장하기</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('page-entry').innerHTML = `
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:18px;flex-wrap:wrap">
+      <div class="sec-title" style="margin:0">대결 결과 입력</div>
+      <button class="btn btn-sm btn-prim" onclick="openCalModal()">+ 대결 추가</button>
+    </div>
+    ${S.battles.length===0
+      ?'<div style="text-align:center;padding:48px;color:var(--t3)">대결을 추가해주세요</div>'
+      :`<div class="battle-grid">${panels}</div>`}`;
+}
+
+function saveAllEntryScores(bid){
+  const bt = S.battles.find(b=>b.id===bid); if(!bt) return;
+  if(!bt.bossScores) bt.bossScores={};
+  if(!bt.result) bt.result=Array(30).fill(null);
+  const sortedM = [...S.members].sort((a,b)=>(b.power||0)-(a.power||0));
+  const now = new Date();
+  const today = (now.getMonth()+1).toString().padStart(2,'0')+'/'+(now.getDate()).toString().padStart(2,'0');
+  if(!bt.powerSnapshot) bt.powerSnapshot={};
+
+  sortedM.forEach((m, i)=>{
+    // 보스 점수 저장
+    const scoreEl = document.getElementById(bid+'-idx-'+i);
+    if(scoreEl){
+      const num = parseFloat(scoreEl.value);
+      if(!isNaN(num) && num >= 0) bt.bossScores[m.name] = num;
+    }
+    // 전투력 저장
+    const pwEl = document.getElementById(bid+'-pw-'+i);
+    if(pwEl && pwEl.value.trim()!==''){
+      const pw = parseFloat(pwEl.value);
+      if(!isNaN(pw) && pw > 0){
+        const member = S.members.find(x=>x.name===m.name);
+        if(member && parseFloat(member.power) !== pw){
+          member.prevPower = parseFloat(member.power)||0;
+          member.prevPowerDate = member.powerDate||'';
+          member.power = pw;
+          member.powerDate = today;
+        }
+        bt.powerSnapshot[m.name] = pw;
+      }
+    }
+  });
+
+  // 보스점수 기준 성과순위 재계산
+  const scored = Object.entries(bt.bossScores).sort((a,b)=>b[1]-a[1]).map(e=>e[0]);
+  const newResult = Array(30).fill(null);
+  scored.forEach((n,i)=>{ if(i<30) newResult[i]=n; });
+  bt.result = newResult;
+  save(); renderEntryPage();
+  showToast('저장 완료!');
+}
+function saveEntryScore(bid, name, val){
+  const bt = S.battles.find(b=>b.id===bid); if(!bt) return;
+  if(!bt.bossScores) bt.bossScores={};
+  if(!bt.result) bt.result=Array(30).fill(null);
+  const num = parseFloat(val);
+  if(!isNaN(num) && num >= 0){
+    bt.bossScores[name] = num;
+    // 성과순위 자동 계산: bossScores 기준 내림차순으로 result 배열 재생성
+    const scored = Object.entries(bt.bossScores)
+      .sort((a,b)=>b[1]-a[1])
+      .map(e=>e[0]);
+    // result 배열 재구성 (점수 없는 사람은 null)
+    const newResult = Array(30).fill(null);
+    scored.forEach((n,i)=>{ if(i<30) newResult[i]=n; });
+    bt.result = newResult;
+  } else {
+    delete bt.bossScores[name];
+  }
+  save(); renderEntryPage();
+  showToast(name+' 저장!');
+}
+function togglePanel(id){
+  const el = document.getElementById('panel-'+id);
+  if(!el) return;
+  const closing = !el.classList.contains('collapsed');
+  el.classList.toggle('collapsed');
+  if(closing) openPanels.delete(id);
+  else openPanels.add(id);
+}
+
+// ── 달력 모달 ──────────────────────────────────
+let calState = { year:0, month:0, day:0, type:'토벌전' };
+function openCalModal(){
+  const now = new Date();
+  calState.year = now.getFullYear();
+  calState.month = now.getMonth(); // 0-based
+  calState.day = 0;
+  calState.type = '토벌전';
+  calSelType('토벌전');
+  renderCal();
+  document.getElementById('cal-modal-bg').classList.add('open');
+}
+function calBgClick(e){ if(e.target===document.getElementById('cal-modal-bg')) document.getElementById('cal-modal-bg').classList.remove('open'); }
+function calMove(d){
+  calState.month += d;
+  if(calState.month < 0){ calState.month=11; calState.year--; }
+  if(calState.month > 11){ calState.month=0; calState.year++; }
+  calState.day = 0;
+  renderCal();
+}
+function calSelType(t){
+  calState.type = t;
+  document.getElementById('cal-type-tobul').classList.toggle('on', t==='토벌전');
+  document.getElementById('cal-type-daehang').classList.toggle('on', t==='대항전');
+  document.getElementById('cal-type-boss').classList.toggle('on', t==='길드보스');
+  document.getElementById('cal-type-training').classList.toggle('on', t==='수련장');
+}
+function renderCal(){
+  const y=calState.year, m=calState.month;
+  const months=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  document.getElementById('cal-title').textContent = y+'년 '+months[m];
+  const firstDay = new Date(y,m,1).getDay(); // 0=일
+  const daysInMonth = new Date(y,m+1,0).getDate();
+  const today = new Date();
+  let html = '';
+  for(let i=0;i<firstDay;i++) html += '<div class="cal-day empty"></div>';
+  for(let d=1;d<=daysInMonth;d++){
+    const isToday = today.getFullYear()===y && today.getMonth()===m && today.getDate()===d;
+    const isSel = calState.day===d;
+    html += `<button class="cal-day${isToday?' today':''}${isSel?' selected':''}" onclick="calPickDay(${d})">${d}</button>`;
+  }
+  document.getElementById('cal-days').innerHTML = html;
+}
+function calPickDay(d){
+  calState.day = d;
+  renderCal();
+}
+function calConfirm(){
+  if(!calState.day){ showToast('날짜를 선택하세요'); return; }
+  const mm = String(calState.month+1).padStart(2,'0');
+  const dd = String(calState.day).padStart(2,'0');
+  const dateStr = mm+'/'+dd;
+  // 현재 투력 스냅샷 저장 - 나중에 투력이 바뀌어도 당시 기준 유지
+  const powerSnapshot = {};
+  S.members.forEach(m=>{ powerSnapshot[m.name] = parseFloat(m.power)||0; });
+  const b={id:'b'+Date.now(),date:dateStr,type:calState.type,result:Array(30).fill(null),powerSnapshot};
+  S.battles.push(b); S.currentId=b.id;
+  document.getElementById('cal-modal-bg').classList.remove('open');
+  openPanels.add(b.id);
+  save(); renderEntryPage(); showToast(dateStr+' '+calState.type+' 추가!');
+}
+
+function deleteBattle(e,id,date,type){
+  e.stopPropagation();
+  showConfirm(date+' '+type+' 결과를 삭제할까요?\n입력된 데이터가 모두 사라집니다.', function(){
+    S.battles=S.battles.filter(b=>b.id!==id);
+    if(S.currentId===id)S.currentId=S.battles[S.battles.length-1]?.id||null;
+    save();renderAll();
+  });
+}
+function saveBossScore(e,bid,name,val){
+  e.stopPropagation();
+  const bt=S.battles.find(b=>b.id===bid);if(!bt)return;
+  if(!bt.bossScores)bt.bossScores={};
+  const num=parseInt(val);
+  if(!isNaN(num)&&num>=0) bt.bossScores[name]=num;
+  else delete bt.bossScores[name];
+  save();
+}
+function clearSlot(e,bid,idx){
+  e.stopPropagation();
+  const bt=S.battles.find(b=>b.id===bid);if(!bt)return;
+  if(!bt.result) bt.result=Array(30).fill(null);
+  bt.result[idx]=null;save();renderEntryPage();
+}
+
+// ══════════════════════════════════════════════
+//  MODAL
+// ══════════════════════════════════════════════
+function openModal(bid,idx){
+  MC={battleId:bid,slotIdx:idx};
+  document.getElementById('modal-title').textContent=`${idx+1}위 길드원 선택`;
+  document.getElementById('modal-search').value='';
+  renderModalList();
+  document.getElementById('modal-bg').classList.add('open');
+  setTimeout(()=>document.getElementById('modal-search').focus(),40);
+}
+function closeModal(){document.getElementById('modal-bg').classList.remove('open')}
+function bgClick(e){if(e.target===document.getElementById('modal-bg'))closeModal()}
+function renderModalList(){
+  const bt=S.battles.find(b=>b.id===MC.battleId);if(!bt)return;
+  if(!bt.result) bt.result=Array(30).fill(null);
+  const q=document.getElementById('modal-search').value.trim().toLowerCase();
+  const used=new Set(bt.result.filter((n,i)=>n&&i!==MC.slotIdx));
+  const sortedM=[...S.members].sort((a,b)=>b.power-a.power);
+  document.getElementById('modal-list').innerHTML=sortedM
+    .map((m,i)=>({name:m.name,pr:i+1}))
+    .filter(m=>!q||m.name.toLowerCase().includes(q)||m.name.includes(q))
+    .map(m=>{
+      const isUsed=used.has(m.name);
+      const isSel=bt.result[MC.slotIdx]===m.name;
+      return `<div class="mitem${isUsed?' used':''}${isSel?' sel':''}" onclick="pick('${m.name}')">
+        <div class="mrank">투력${m.pr}위</div>
+        <div class="mname">${m.name}</div>
+      </div>`;
+    }).join('');
+}
+function pick(name){
+  const bt=S.battles.find(b=>b.id===MC.battleId);if(!bt)return;
+  bt.result[MC.slotIdx]=name;
+  save();closeModal();renderEntryPage();
+  showToast(`${MC.slotIdx+1}위 → ${name}`);
+}
+
+// ══════════════════════════════════════════════
+//  MEMBERS
+// ══════════════════════════════════════════════
+function fmtPower(p){
+  if(p===null||p===undefined||p===''||p===0)return '-';
+  const n=parseFloat(p);
+  if(isNaN(n))return '-';
+  // 소수점 1자리까지만, 불필요한 .0 제거
+  return (Math.round(n*10)/10).toLocaleString('ko-KR', {maximumFractionDigits:1})+'조';
+}
+function renderMembersPage(){
+  if(!S.members) S.members=[];
+  const sorted=[...S.members].sort((a,b)=>(b.power||0)-(a.power||0));
+
+  const makeRow = (m, i) => `
+    <div class="mt-row" style="grid-template-columns:46px 1fr 1fr 1fr">
+      <div style="font-size:13px;font-weight:700;color:var(--text)">${i+1}위</div>
+      <div><input class="name-edit" value="${m.name}" id="mn-idx-${i}" onblur="upName('${m.name}',this.value)"></div>
+      <div style="font-size:12px;color:var(--t2)">
+        ${m.prevPower?`<span style="color:var(--t2)">${fmtPower(m.prevPower)}</span><span style="color:var(--t3);margin-left:4px">(${m.prevPowerDate||''})</span>`:'<span style="color:var(--t3)">-</span>'}
+      </div>
+      <div style="display:flex;align-items:center;gap:5px">
+        <input type="text" inputmode="decimal" class="power-input" id="pi-idx-${i}"
+          value="" placeholder="${m.power||'미입력'}"
+          style="width:75px"
+          onkeydown="if(event.key==='Enter')applyPower('${m.name}')">
+        <span style="font-size:12px;color:var(--t2);flex-shrink:0">조</span>
+        <button class="btn btn-sm btn-danger" onclick="removeM('${m.name}')">추방</button>
+      </div>
+    </div>`;
+
+  const colHead = `<div class="mt-head" style="grid-template-columns:46px 1fr 1fr 1fr">
+    <div>순위</div><div>닉네임</div><div>이전 전투력</div><div>전투력 갱신</div>
+  </div>`;
+
+  const left  = sorted.slice(0,15).map((m,i)=>makeRow(m,i)).join('');
+  const right = sorted.slice(15,30).map((m,i)=>makeRow(m,i+15)).join('');
+
+  document.getElementById('page-members').innerHTML=`
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap">
+      <div class="sec-title" style="margin:0">길드원 (전투력 순위 자동 정렬)</div>
+      <button class="btn btn-sm" onclick="addMember()">+ 길드원 추가</button>
+    </div>
+    <div style="font-size:12px;color:var(--t3);margin-bottom:14px">전투력 입력 후 일괄 적용 버튼을 누르면 순위가 자동 갱신됩니다.</div>
+    <div class="member-table">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+        <div style="border-right:1px solid var(--border)">${colHead}${left}</div>
+        <div>${colHead}${right}</div>
+      </div>
+      <div style="padding:14px 18px;border-top:1px solid var(--border);display:flex;justify-content:flex-end">
+        <button class="btn btn-prim" onclick="applyAllPowers()">✓ 저장하기</button>
+      </div>
+    </div>`;
+}
+function upName(oldName,v){
+  if(!v.trim())return;
+  const m=S.members.find(x=>x.name===oldName);
+  if(m)m.name=v.trim();
+}
+function applyAllPowers(){
+  const now = new Date();
+  const today = (now.getMonth()+1).toString().padStart(2,'0')+'/'+(now.getDate()).toString().padStart(2,'0');
+  // 현재 정렬 순서 (화면에 보이는 순서와 동일)
+  const sorted = [...S.members].sort((a,b)=>(b.power||0)-(a.power||0));
+  let count = 0;
+  sorted.forEach((m, i)=>{
+    const el = document.getElementById('pi-idx-'+i);
+    if(!el) return;
+    const val = parseFloat(el.value);
+    if(isNaN(val) || val <= 0) return;
+    // 실제 S.members에서 해당 멤버 찾아서 업데이트
+    const member = S.members.find(x=>x.name===m.name);
+    if(!member) return;
+    if(parseFloat(member.power) !== val){
+      member.prevPower = parseFloat(member.power)||0;
+      member.prevPowerDate = member.powerDate||'';
+      member.power = val;
+      member.powerDate = today;
+      count++;
+    }
+  });
+  save(); renderMembersPage();
+  showToast(count > 0 ? count+'명 전투력 저장 완료!' : '변경된 전투력이 없어요');
+}
+function applyPower(name){
+  const safeId=name.replace(/[^a-zA-Z0-9]/g,'_');
+  const raw=document.getElementById('pi-'+safeId)?.value.trim();
+  const val=parseFloat(raw);
+  if(isNaN(val)||val<=0){showToast('전투력을 올바르게 입력하세요');return;}
+  const m=S.members.find(x=>x.name===name);
+  if(!m)return;
+  // 현재값 → 이전값으로 백업
+  if(m.power){m.prevPower=parseFloat(m.power);m.prevPowerDate=m.powerDate||'';}
+  m.power=val; // 항상 숫자로 저장
+  const now=new Date();
+  m.powerDate=(now.getMonth()+1).toString().padStart(2,'0')+'/'+(now.getDate()).toString().padStart(2,'0');
+  save();renderMembersPage();
+  showToast(name+' '+fmtPower(val)+' 적용!');
+}
+function addMember(){
+  if(S.members.length >= 30){
+    showAlert('길드원 최대치', '길드원은 최대 30명까지만\n등록할 수 있습니다.');
+    return;
+  }
+  document.getElementById('addm-name').value='';
+  document.getElementById('addm-power').value='';
+  document.getElementById('addmember-bg').classList.add('open');
+  setTimeout(()=>document.getElementById('addm-name').focus(),50);
+}
+function closeAddMember(){
+  document.getElementById('addmember-bg').classList.remove('open');
+}
+function confirmAddMember(){
+  const name=document.getElementById('addm-name').value.trim();
+  if(!name){showToast('닉네임을 입력하세요');return;}
+  const powerVal=parseFloat(document.getElementById('addm-power').value)||0;
+  const now=new Date();
+  const powerDate=powerVal>0?(now.getMonth()+1).toString().padStart(2,'0')+'/'+(now.getDate()).toString().padStart(2,'0'):'';
+  S.members.push({name,power:powerVal,powerDate,prevPower:0,prevPowerDate:''});
+  closeAddMember();
+  save();renderMembersPage();
+  showToast(name+' 추가 완료!');
+}
+function removeM(name){
+  showConfirm(name+' 길드원을 추방할까요?', function(){
+    S.members=S.members.filter(m=>m.name!==name);save();renderMembersPage();
+  });
+}
+
+// ══════════════════════════════════════════════
+//  ALERT MODAL
+// ══════════════════════════════════════════════
+function showAlert(title, msg, icon='⚠️'){
+  document.getElementById('alert-icon').textContent = icon;
+  document.getElementById('alert-title').textContent = title;
+  document.getElementById('alert-msg').textContent = msg;
+  document.getElementById('alert-modal-bg').classList.add('open');
+}
+function closeAlert(){
+  document.getElementById('alert-modal-bg').classList.remove('open');
+}
+
+// ══════════════════════════════════════════════
+//  CONFIRM MODAL
+// ══════════════════════════════════════════════
+let _confirmCb = null;
+function showConfirm(msg, cb){
+  _confirmCb = cb;
+  document.getElementById('confirm-msg').innerHTML = msg.replace(/\n/g,'<br>');
+  document.getElementById('confirm-bg').classList.add('open');
+}
+function confirmOk(){
+  document.getElementById('confirm-bg').classList.remove('open');
+  if(_confirmCb){ _confirmCb(); _confirmCb=null; }
+}
+function confirmCancel(){
+  document.getElementById('confirm-bg').classList.remove('open');
+  _confirmCb=null;
+}
+
+
+// ══════════════════════════════════════════════
+//  STANDARD PAGE (기준치 관리)
+// ══════════════════════════════════════════════
+const BATTLE_TYPES = ['토벌전','대항전','길드보스','수련장'];
+
+function getStandards(type){
+  if(!S.standards || typeof S.standards !== 'object') S.standards={};
+  if(!S.standards[type]){
+    const defaults = {
+      '길드보스': [
+        {label:'100조 이상', minPower:100, maxPower:999999, score:200},
+        {label:'30~100조',   minPower:30,  maxPower:100,    score:90},
+        {label:'10~30조',    minPower:10,  maxPower:30,     score:60},
+        {label:'5~10조',     minPower:5,   maxPower:10,     score:50},
+        {label:'5조 미만',   minPower:0,   maxPower:5,      score:30},
+      ]
+    };
+    S.standards[type] = defaults[type] || [
+      {label:'100조 이상', minPower:100, maxPower:999999, score:0},
+      {label:'30~100조',   minPower:30,  maxPower:100,    score:0},
+      {label:'10~30조',    minPower:10,  maxPower:30,     score:0},
+      {label:'5~10조',     minPower:5,   maxPower:10,     score:0},
+      {label:'5조 미만',   minPower:0,   maxPower:5,      score:0},
+    ];
+  }
+  return S.standards[type];
+}
+
+function getExpectedScore(type, power){
+  const stds = getStandards(type);
+  const p = parseFloat(power)||0;
+  const match = stds.find(s=> p >= s.minPower && p < s.maxPower + 0.0001);
+  return match ? match.score : null;
+}
+
+function renderStandardPage(){
+  if(!S.standards) S.standards={};
+  const sections = BATTLE_TYPES.map(type=>{
+    const stds = getStandards(type);
+    const tCls = tagCls(type);
+    const rows = stds.map((s,i)=>{
+      const typeIdx = BATTLE_TYPES.indexOf(type);
+      const inputId = 'std-t'+typeIdx+'-i'+i;
+      const labelStr = s.label || (s.minPower+'조~'+(s.maxPower>=999999?'∞':s.maxPower+'조'));
+      return `<div class="std-row">
+        <button class="btn-minus" onclick="deleteStd('${type}',${i})" title="삭제">−</button>
+        <div style="font-size:13px;font-weight:500">${labelStr}</div>
+        <div style="font-size:11px;color:var(--t3)">
+          ${s.minPower}조 ~ ${s.maxPower>=999999?'∞':s.maxPower+'조'}
+        </div>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input type="text" inputmode="decimal" class="std-input" id="${inputId}"
+            value="${s.score||''}" placeholder="0">
+          <span style="font-size:11px;color:var(--t2)">억</span>
+        </div>
+        <div></div>
+      </div>`;
+    }).join('');
+
+    return `<div class="std-section">
+      <div class="std-section-head">
+        <div class="std-section-title"><span class="tag ${tCls}">${type}</span> 투력 구간별 기준 점수</div>
+        <button class="btn btn-sm" onclick="openRangeModal('${type}')">+ 범위 추가</button>
+      </div>
+      <div class="std-row-head">
+        <div></div><div>투력 구간</div><div>범위</div><div>기준 점수</div><div></div>
+      </div>
+      ${rows}
+      <div style="padding:14px 18px;border-top:1px solid var(--border);display:flex;justify-content:flex-end">
+        <button class="btn btn-prim" onclick="saveAllStd('${type}')">✓ 적용하기</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('page-standard').innerHTML = `
+    <div style="margin-bottom:20px">
+      <div class="sec-title" style="margin-bottom:6px">기준치 관리</div>
+      <div style="font-size:12px;color:var(--t3)">각 전투 종류별, 투력 구간별 기준 점수를 설정하세요.<br>현황판에서 실제 점수와 비교해 달성 여부를 보여줍니다.</div>
+    </div>
+    ${sections}`;
+}
+
+function saveStd(type, idx, val){
+  const stds = getStandards(type);
+  const num = parseFloat(val)||0;
+  stds[idx].score = num;
+  save();
+  renderStandardPage();
+  showToast(type+' 기준치 저장!');
+}
+function saveAllStd(type){
+  const stds = getStandards(type);
+  const typeIdx = BATTLE_TYPES.indexOf(type);
+  stds.forEach((s,i)=>{
+    const inputId = 'std-t'+typeIdx+'-i'+i;
+    const val = document.getElementById(inputId)?.value;
+    const num = parseFloat(val);
+    if(!isNaN(num)) s.score = num;
+  });
+  save();
+  renderStandardPage();
+  showToast(type+' 기준치 저장!');
+}
+function deleteStd(type, idx){
+  const stds = getStandards(type);
+  const s = stds[idx];
+  const label = s.label || (s.minPower+'조~'+(s.maxPower>=999999?'∞':s.maxPower+'조'));
+  showConfirm('['+type+'] '+label+' 기준치를 삭제할까요?', function(){
+    stds.splice(idx,1);
+    save(); renderStandardPage();
+    showToast('삭제 완료');
+  });
+}
+
+let _rangeType = null;
+function openRangeModal(type){
+  _rangeType = type;
+  document.getElementById('rm-min').value = 0;
+  document.getElementById('rm-min-edit').value = '0';
+  document.getElementById('rm-max').value = 100;
+  document.getElementById('rm-max-edit').value = '100';
+  document.getElementById('rm-score').value = '';
+  document.getElementById('range-modal-bg').classList.add('open');
+  setTimeout(()=>document.getElementById('rm-min-edit').focus(), 50);
+}
+function syncEdit(id, val){
+  // 슬라이더 → 에디트박스
+  const num = parseFloat(val)||0;
+  document.getElementById('rm-'+id+'-edit').value = num >= 9999 ? '9999' : num;
+}
+function syncSlider(id, val){
+  // 에디트박스 → 슬라이더
+  const num = parseFloat(val);
+  if(!isNaN(num)) document.getElementById('rm-'+id).value = Math.min(num, 9999);
+}
+function closeRangeModal(){
+  document.getElementById('range-modal-bg').classList.remove('open');
+}
+function confirmAddRange(){
+  const minV = parseFloat(document.getElementById('rm-min-edit').value)||0;
+  const maxRaw = parseFloat(document.getElementById('rm-max-edit').value)||0;
+  const maxV = maxRaw >= 9999 ? 999999 : maxRaw;
+  const score = parseFloat(document.getElementById('rm-score').value)||0;
+  if(minV >= maxV && maxV !== 999999){ showToast('최소값이 최대값보다 클 수 없어요'); return; }
+  const stds = getStandards(_rangeType);
+  const label = minV+'조~'+(maxV>=999999?'∞':maxV+'조');
+  stds.push({label, minPower:minV, maxPower:maxV, score});
+  // minPower 기준 내림차순 정렬
+  stds.sort((a,b)=>b.minPower-a.minPower);
+  save(); closeRangeModal(); renderStandardPage();
+  showToast(_rangeType+' 범위 추가!');
+}
+
+// ══════════════════════════════════════════════
+//  NAV + INIT
+// ══════════════════════════════════════════════
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+const PW = '0068';
+let _authenticated = false;
+let _pendingPage = null;
+
+function goPage(name){
+  if(name !== 'dashboard' && !_authenticated){
+    _pendingPage = name;
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-error').textContent='';
+    document.getElementById('pw-modal-bg').classList.add('open');
+    setTimeout(()=>document.getElementById('pw-input').focus(),50);
+    return;
+  }
+  _showPage(name);
+}
+function _showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('page-'+name).classList.add('on');
+  document.querySelectorAll('.nav-tab').forEach(t=>{
+    if(t.getAttribute('onclick').includes(name))t.classList.add('on');
+  });
+  if(name==='dashboard')renderDashboard();
+  if(name==='entry')renderEntryPage();
+  if(name==='members')renderMembersPage();
+  if(name==='standard')renderStandardPage();
+}
+function closePwModal(){
+  document.getElementById('pw-modal-bg').classList.remove('open');
+  _pendingPage = null;
+}
+function checkPw(){
+  const val = document.getElementById('pw-input').value;
+  if(val === PW){
+    _authenticated = true;
+    document.getElementById('pw-modal-bg').classList.remove('open');
+    if(_pendingPage){ _showPage(_pendingPage); _pendingPage=null; }
+  } else {
+    document.getElementById('pw-error').textContent='비밀번호가 틀렸습니다';
+    document.getElementById('pw-input').value='';
+    setTimeout(()=>document.getElementById('pw-input').focus(),50);
+  }
+}
+function renderAll(){
+  const cur=document.querySelector('.nav-tab.on')?.getAttribute('onclick').match(/'(\w+)'/)?.[1]||'dashboard';
+  _showPage(cur);
+}
+
+fbInit();
+</script>
+
+<footer style="text-align:center;padding:28px 16px;font-size:12px;color:var(--t3);border-top:1px solid var(--border);margin-top:40px">
+  <svg width="16" height="16" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;flex-shrink:0">
+  <rect x="1" y="1" width="20" height="20" rx="3" fill="#7B4F2E" stroke="#5C3A1E" stroke-width="1.2"/>
+  <rect x="3" y="3" width="16" height="7" rx="1.5" fill="#A0673A"/>
+  <rect x="3" y="12" width="16" height="7" rx="1.5" fill="#A0673A"/>
+  <rect x="9" y="5.5" width="4" height="2" rx="1" fill="#C89060"/>
+  <rect x="9" y="14.5" width="4" height="2" rx="1" fill="#C89060"/>
+</svg> 서랍길드 성과관리 &nbsp;·&nbsp; by. 망치깎는노인 &nbsp;·&nbsp; 2025.06
+</footer>
+</body>
+</html>
