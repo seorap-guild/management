@@ -1854,66 +1854,23 @@ const INFO_TIPS = {
     </div>
 
     <div class="tip-card">
-      <div class="tip-card-head" style="justify-content:space-between">
-        <span class="tip-card-title">① 길마 인증 최적화 프리셋 세팅</span>
-        <span style="font-size:11px;color:var(--purple);flex-shrink:0;font-weight:600">영상 초반 참고</span>
+      <div class="tip-card-head">
+        <span class="tip-card-title">① 보스 메커니즘</span>
       </div>
       <div class="tip-body">
-        <div class="tip-item">
-          <div class="tip-num" style="background:rgba(155,127,245,.2);color:var(--purple)">1</div>
-          <div><span style="color:var(--purple);font-weight:600">[장비 및 유물 프리셋]</span> 긴 전투 시간 동안 누적 딜 최대화를 위해 <strong>보스 공격력 · 치명타 확률/데미지 밸런스 · 최종 데미지 상한선</strong>을 극한으로 쥐어짜는 프리셋 필수.</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-num" style="background:rgba(155,127,245,.2);color:var(--purple)">2</div>
-          <div><span style="color:var(--purple);font-weight:600">[동료 시너지]</span> 보스 방어선 무력화 <strong>디버퍼(방깎)</strong> 고정 배치 + 메인 캐릭터 스킬 쿨타임과 딱 맞는 <strong>공속/증뎀 버퍼</strong> 조합이 핵심.</div>
-        </div>
-        <div style="margin-top:6px">
-          <div style="font-size:12px;color:var(--t2);font-weight:500;margin-bottom:8px">📸 길마 영상 캡처 — 유물 조합 & 어빌리티 세팅</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/1.jpeg')">
-              <img src="public/boss_match/1.jpeg" alt="보스 대전 세팅 1" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
-            </div>
-            <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/2.jpeg')">
-              <img src="public/boss_match/2.jpeg" alt="보스 대전 세팅 2" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
-            </div>
-            <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/3.jpeg')">
-              <img src="public/boss_match/3.jpeg" alt="보스 대전 세팅 3" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
-            </div>
-            <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/4.jpeg')">
-              <img src="public/boss_match/4.jpeg" alt="보스 대전 세팅 4" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/1.jpeg')">
+            <img src="public/boss_match/1.jpeg" alt="보스 메커니즘" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+            <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">브레스 패턴 & 무력화 흐름</div>
+              <div style="font-size:11px;color:var(--t2);line-height:1.6">왼쪽 브레스→HP%, 오른쪽 브레스→MP% 소모 / 브레스 3회 후 보라색 장판, 6회 후 받는피해감소 버프→장판→무력화 순서로 진행</div>
             </div>
           </div>
-          <div style="font-size:11px;color:var(--t3);margin-top:6px;text-align:center">이미지 클릭 시 크게 보기</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tip-card">
-      <div class="tip-card-head" style="justify-content:space-between">
-        <span class="tip-card-title">② 실전 손컨 및 딜 사이클 택틱</span>
-        <span style="font-size:11px;color:var(--gold);flex-shrink:0;font-weight:600">길마 강조 포인트</span>
-      </div>
-      <div class="tip-body">
-        <div class="tip-item">
-          <div class="tip-num" style="background:rgba(245,200,66,.15);color:var(--gold)">1</div>
-          <div><span style="color:var(--gold);font-weight:600">[진입 및 오토 해제]</span> 던전 시작 즉시 Auto OFF. 초반 유물 스택(육각 스택 등) & 캐릭터 버프 <strong>예열이 끝날 때까지</strong> 주력 기가급 스킬 시전을 정교하게 조율.</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-num" style="background:rgba(245,200,66,.15);color:var(--gold)">2</div>
-          <div><span style="color:var(--gold);font-weight:600">[패턴 파쇄 & 딜로스 최소화]</span> 넉백·장판·메테오 등 메이저 기믹 전조 증상 확인 후, 타이밍에 맞춰 <strong>무적기 or 대쉬 스킬 연계</strong>로 제자리 말뚝딜 유지.</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-num" style="background:rgba(245,200,66,.15);color:var(--gold)">3</div>
-          <div><span style="color:var(--gold);font-weight:600">[그로기 타이밍 딜몰이]</span> 무력화 직전, 모든 동료 쿨타임 + 액티브 버프를 정렬해두었다가 그로기 진입과 동시에 <strong>폭발적인 극딜</strong>을 쏟아부어야 고점 돌파.</div>
-        </div>
-        <div style="margin-top:6px">
-          <div style="font-size:12px;color:var(--t2);font-weight:500;margin-bottom:8px">📸 실전 손컨 & 딜 사이클 캡처</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/5.jpeg')">
-              <img src="public/boss_match/5.jpeg" alt="보스 대전 실전 5" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
-            </div>
-            <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/6.jpeg')">
-              <img src="public/boss_match/6.jpeg" alt="보스 대전 실전 6" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+          <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/2.jpeg')">
+            <img src="public/boss_match/2.jpeg" alt="보스 핵심 팁" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+            <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">핵심 생존 & 점수 팁</div>
+              <div style="font-size:11px;color:var(--t2);line-height:1.6">절대 죽으면 안됨(버프 증발) / 보라색 장판 회피 / 구슬 생성 즉시 수집 / MP 부족 시 공속·스킬레벨→데미지류 세팅으로 전환</div>
             </div>
           </div>
         </div>
@@ -1922,32 +1879,74 @@ const INFO_TIPS = {
 
     <div class="tip-card">
       <div class="tip-card-head">
-        <span class="tip-card-title">③ 길드원 상향 평준화 핵심 체크리스트</span>
+        <span class="tip-card-title">② 브레스 방향 판단 & 회피 포지셔닝</span>
       </div>
       <div class="tip-body">
-        <div class="tip-item">
-          <div class="tip-bullet" style="background:var(--gold)"></div>
-          <div>보스에게 걸리는 <strong>디버프(방깎·피증) 상시 유지</strong> 여부와 아군 버프 업타임(Uptime) 체크.</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-bullet" style="background:var(--gold)"></div>
-          <div>패턴 미스로 버프 증발 or 주요 동료 급사 시, 미련 없이 즉시 <strong>다시하기(리트라이)</strong>로 도전 횟수 & 빌드 낭비 방지.</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-bullet" style="background:var(--gold)"></div>
-          <div>제한 시간 종료 직전 <strong>마지막 소숫점 1초까지</strong> 영혼의 막타 딜링을 우겨넣어 길드 랭킹 스코어 극대화.</div>
-        </div>
-        <div style="margin-top:8px">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/7.jpeg')">
-              <img src="public/boss_match/7.jpeg" alt="보스 대전 체크 7" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/3.jpeg')">
+            <img src="public/boss_match/3.jpeg" alt="브레스 방향 판단" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+            <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">왼/오른쪽 브레스 방향 판단법</div>
+              <div style="font-size:11px;color:var(--t2);line-height:1.6">캐릭터 시선(가만히 있을 때 바라보는 방향) 기준으로 왼/오른쪽이 결정됨 — 어느 뱀이 타격하는지 캐릭터 시선으로 판단</div>
             </div>
-            <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/8.jpeg')">
-              <img src="public/boss_match/8.jpeg" alt="보스 대전 체크 8" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+          </div>
+          <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/4.jpeg')">
+            <img src="public/boss_match/4.jpeg" alt="브레스 회피 포지셔닝" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+            <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">대쉬 회피 포지셔닝</div>
+              <div style="font-size:11px;color:var(--t2);line-height:1.6">대쉬기 보유자는 브레스 쿨타임 확인하면서 미리 뒤로 빠져 대기 / 왼쪽 브레스 3회 맞고 바로 HP물약 쓰면 연속 3회 더 맞을 수 있어 주의</div>
             </div>
           </div>
         </div>
-        <div class="tip-note">💡 보스 대전 고점의 핵심은 <strong>풀스택 예열 → 그로기 타이밍 시너지 정렬 → 막타 딜 우겨넣기</strong> 루틴입니다. — 길마 직강 요약</div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head">
+        <span class="tip-card-title">③ 동료 세팅</span>
+      </div>
+      <div class="tip-body">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/5.jpeg')">
+            <img src="public/boss_match/5.jpeg" alt="동료 세팅 기본 구성" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+            <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">메인/서브 동료 구성 & 명약 활용</div>
+              <div style="font-size:11px;color:var(--t2);line-height:1.6">메인: 받는피해감소 버프제거 가능 동료 / 서브: 신궁(무력화 보스 1티어) 포함 데미지류 / 명약+불독2렙 조합이 명약+새도1렙보다 점수 높음</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/6.jpeg')">
+              <img src="public/boss_match/6.jpeg" alt="보마 공속 조절" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+              <div style="padding:6px 10px;background:var(--s2);border-top:1px solid var(--border)">
+                <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">보마(공속) 동료 주의사항</div>
+                <div style="font-size:10px;color:var(--t2);line-height:1.5">MP 관리가 안 되면 보마 공속 동료 적당히 줄이기</div>
+              </div>
+            </div>
+            <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/7.jpeg')">
+              <img src="public/boss_match/7.jpeg" alt="공속 DPS 기준" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+              <div style="padding:6px 10px;background:var(--s2);border-top:1px solid var(--border)">
+                <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">공속 DPS 기준</div>
+                <div style="font-size:10px;color:var(--t2);line-height:1.5">공속 60~70% 이내로도 초당 DPS 충분</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head">
+        <span class="tip-card-title">④ 유물 세팅</span>
+      </div>
+      <div class="tip-body">
+        <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/8.jpeg')">
+          <img src="public/boss_match/8.jpeg" alt="유물 세팅 추천" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+          <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
+            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">유니크 3종 + 레전더리 6종 추천 구성</div>
+            <div style="font-size:11px;color:var(--t2);line-height:1.6">명약(1티어) / 용암(명약 시 디버프 최종뎀 시너지) / 영혼석(MP회복, 어빌 mp회복 미스틱 있으면 75% 이상 유지 가능) / 물병(공속 비례라 공속 낮으면 비추천) — 신규 유물은 추후 공지</div>
+          </div>
+        </div>
+        <div class="tip-note" style="margin-top:10px">💡 보스 대전 고점 핵심 루틴: <strong>풀스택 예열 → 구슬 즉시 수집 → 그로기 타이밍 시너지 정렬 → 막타 딜 우겨넣기</strong></div>
       </div>
     </div>
   `,
