@@ -251,6 +251,8 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--green);color:#061a0e;padding:10px 20px;border-radius:9px;font-weight:500;font-size:13px;opacity:0;transition:all .22s;z-index:999;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+.two-col-grid{display:grid;grid-template-columns:1fr 1fr}
+
 @media(max-width:640px){
   .page{padding:12px}
   .nav{padding:0 12px}
@@ -266,6 +268,8 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
   .summary-row{gap:8px}
   .chip{min-width:80px;padding:10px 12px}
   .pw-box{padding:28px 20px 24px}
+  .two-col-grid{grid-template-columns:1fr}
+  .two-col-grid > div{border-right:none !important}
 }
 </style>
 <!-- Firebase compat SDK -->
@@ -504,6 +508,8 @@ function fbInit(){
       fbSave();
     }
     if(!fbLoaded){
+      // 첫 로드 시에만 currentId를 Firebase 데이터로 초기화 (하위 호환)
+      if(!localState.currentId && data && data.currentId) localState.currentId = data.currentId;
       fbLoaded = true;
       renderAll();
       document.getElementById('loading-screen').style.display='none';
@@ -523,7 +529,9 @@ function fbSave(){
   try{
     if(dataRef){
       _saveCount++;
-      dataRef.set(JSON.parse(JSON.stringify(S)));
+      const toSave = JSON.parse(JSON.stringify(S));
+      delete toSave.currentId; // currentId는 세션별 상태이므로 공유하지 않음
+      dataRef.set(toSave);
     }
   }catch(e){ console.error('FB save error',e); if(_saveCount>0)_saveCount--; }
 }
@@ -534,9 +542,11 @@ function fbSave(){
 let S = {
   members: [], // 투력순위 = 인덱스+1
   battles: [], // [{id, date, type, result:[name|null x30]}]
-  currentId: null,
   standards: {} // {type: [{label, minPower, maxPower, score}]}
 };
+
+// 세션별로 관리되는 UI 상태 (Firebase에 저장/공유하지 않음)
+let localState = { currentId: null };
 
 function seed() {
   S.members = [
@@ -609,7 +619,7 @@ function seed() {
       }
     }
   ];
-  S.currentId = 'b2';
+  localState.currentId = 'b2';
 }
 
 function save(){
@@ -621,6 +631,8 @@ function loadLocal(){
     const d=localStorage.getItem('seorap_v2');
     if(d){
       S=JSON.parse(d);
+      if(S.currentId && !localState.currentId) localState.currentId = S.currentId;
+      delete S.currentId;
       S.members.forEach(m=>{
         if(m.power!==undefined) m.power=parseFloat(m.power)||0;
         if(m.prevPower!==undefined) m.prevPower=parseFloat(m.prevPower)||0;
@@ -643,7 +655,10 @@ function memberName(m){ return typeof m==='string'?m:m.name; }
 function score(resultRank,name){ const p=pRank(name); return p===null?0:p-resultRank; }
 function sc(s){ return s>0?'pos':s<0?'neg':'zero'; }
 function ss(s){ return s>0?'+'+s:String(s); }
-function curBattle(){ return S.battles.find(b=>b.id===S.currentId)||S.battles[0]||null; }
+function curBattle(){
+  if(!localState.currentId) localState.currentId = S.battles[S.battles.length-1]?.id || null;
+  return S.battles.find(b=>b.id===localState.currentId)||S.battles[S.battles.length-1]||null;
+}
 function tagCls(type){ return type==='토벌전'?'tag-tobul':type==='대항전'?'tag-daehang':type==='수련장'?'tag-training':'tag-boss'; }
 function btagCls(type){ return type==='토벌전'?'btag-tobul':type==='대항전'?'btag-daehang':type==='수련장'?'btag-training':'btag-boss'; }
 
@@ -656,7 +671,7 @@ function renderDashboard(){
   const bt = curBattle();
 
   const btns = [...S.battles].reverse().map(b=>`
-    <button class="battle-btn${b.id===S.currentId?' on':''}" onclick="selBattle('${b.id}')">
+    <button class="battle-btn${b.id===localState.currentId?' on':''}" onclick="selBattle('${b.id}')">
       <span class="btag ${btagCls(b.type||'길드보스')}">${b.type||'길드보스'}</span>${b.date||''}
     </button>`).join('') +
     ``;
@@ -737,7 +752,7 @@ function renderDashboard(){
         });
         const left  = allRows.slice(0,15).map(makeRow).join('');
         const right = allRows.slice(15,30).map(makeRow).join('');
-        return `<div style="display:grid;grid-template-columns:1fr 1fr">
+        return `<div class="two-col-grid">
           <div style="border-right:1px solid var(--border)">${colHead}${left}</div>
           <div>${colHead}${right}</div>
         </div>`;
@@ -751,7 +766,7 @@ function renderDashboard(){
     ${body}`;
 }
 
-function selBattle(id){ S.currentId=id; save(); renderDashboard(); }
+function selBattle(id){ localState.currentId=id; renderDashboard(); }
 
 // ══════════════════════════════════════════════
 //  ENTRY PAGE
@@ -833,7 +848,7 @@ function renderEntryPage(){
         <button class="btn btn-sm btn-danger" onclick="deleteBattle(event,'${bt.id}','${bt.date}','${bt.type}')">삭제</button>
       </div>
       <div class="slots" style="padding:0">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:none">
+        <div class="two-col-grid">
           <div style="border-right:1px solid var(--border)">${colHead}${left}</div>
           <div>${colHead}${right}</div>
         </div>
@@ -981,7 +996,7 @@ function calConfirm(){
   const powerSnapshot = {};
   S.members.forEach(m=>{ powerSnapshot[m.name] = parseFloat(m.power)||0; });
   const b={id:'b'+Date.now(),date:dateStr,type:calState.type,result:Array(30).fill(null),powerSnapshot};
-  S.battles.push(b); S.currentId=b.id;
+  S.battles.push(b); localState.currentId=b.id;
   document.getElementById('cal-modal-bg').classList.remove('open');
   openPanels.add(b.id);
   save(); renderEntryPage(); showToast(dateStr+' '+calState.type+' 추가!');
@@ -991,7 +1006,7 @@ function deleteBattle(e,id,date,type){
   e.stopPropagation();
   showConfirm(date+' '+type+' 결과를 삭제할까요?\n입력된 데이터가 모두 사라집니다.', function(){
     S.battles=S.battles.filter(b=>b.id!==id);
-    if(S.currentId===id)S.currentId=S.battles[S.battles.length-1]?.id||null;
+    if(localState.currentId===id)localState.currentId=S.battles[S.battles.length-1]?.id||null;
     save();renderAll();
   });
 }
@@ -1094,7 +1109,7 @@ function renderMembersPage(){
     </div>
     <div style="font-size:12px;color:var(--t3);margin-bottom:14px">전투력 입력 후 일괄 적용 버튼을 누르면 순위가 자동 갱신됩니다.</div>
     <div class="member-table">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+      <div class="two-col-grid">
         <div style="border-right:1px solid var(--border)">${colHead}${left}</div>
         <div>${colHead}${right}</div>
       </div>
