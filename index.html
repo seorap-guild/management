@@ -764,6 +764,9 @@ function renderDashboard(){
   document.getElementById('page-dashboard').innerHTML = `
     <div class="battle-bar-wrap"><div class="battle-bar">${btns}</div></div>
     ${body}`;
+
+  const onBtn = document.querySelector('.battle-bar .battle-btn.on');
+  if(onBtn) onBtn.scrollIntoView({block:'nearest', inline:'nearest'});
 }
 
 function selBattle(id){ localState.currentId=id; renderDashboard(); }
