@@ -23,6 +23,20 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .nav-tab{height:52px;padding:0 14px;display:flex;align-items:center;font-size:13px;color:var(--t2);border:none;background:none;cursor:pointer;font-family:'Noto Sans KR',sans-serif;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
 .nav-tab:hover{color:var(--text)}
 .nav-tab.on{color:var(--blue);border-bottom-color:var(--blue)}
+.nav-tabs-wrap{display:flex;gap:4px;align-items:center}
+.nav-hamburger{display:none;margin-left:auto;background:none;border:none;cursor:pointer;padding:6px;color:var(--t2);flex-direction:column;gap:5px;align-items:center;justify-content:center}
+.nav-hamburger span{display:block;width:20px;height:2px;background:currentColor;border-radius:2px;transition:all .22s}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.nav-hamburger:hover{color:var(--text)}
+.nav-cur-page{display:none;font-size:13px;color:var(--t2);margin-left:8px}
+.nav-dropdown{display:none;position:fixed;top:52px;left:0;right:0;background:var(--s1);border-bottom:1px solid var(--border2);z-index:49;flex-direction:column;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.nav-dropdown.open{display:flex}
+.nav-dropdown .nav-tab{height:48px;padding:0 20px;border-bottom:1px solid var(--border);border-left:3px solid transparent;font-size:14px;width:100%}
+.nav-dropdown .nav-tab.on{border-left-color:var(--blue);border-bottom-color:var(--border);background:rgba(91,138,245,.06);color:var(--blue)}
+.nav-dropdown-overlay{display:none;position:fixed;inset:0;top:52px;z-index:48}
+.nav-dropdown-overlay.open{display:block}
 
 .page{display:none;padding:24px;max-width:1200px;margin:0 auto}
 .page.on{display:block}
@@ -251,13 +265,40 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--green);color:#061a0e;padding:10px 20px;border-radius:9px;font-weight:500;font-size:13px;opacity:0;transition:all .22s;z-index:999;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* 직업 뱃지 */
+.job-badge{font-size:10px;font-weight:600;padding:1px 6px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+.job-sel{background:var(--s2);border:1px solid var(--border);color:var(--t2);font-size:11px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;outline:none;padding:2px 5px;border-radius:5px;width:100%;margin-top:2px}
+.job-sel:focus{border-color:var(--blue)}
+.job-sel option{background:#1c2030}
+
+/* 정보 페이지 */
+.info-tab-bar{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.info-tab{height:34px;padding:0 16px;background:var(--s1);border:1px solid var(--border2);color:var(--t2);border-radius:8px;font-size:13px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
+.info-tab:hover{border-color:var(--blue);color:var(--text)}
+.info-tab.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.info-section{display:none}
+.info-section.on{display:block}
+.tip-card{background:var(--s1);border:1px solid var(--border);border-radius:13px;margin-bottom:16px;overflow:hidden}
+.tip-card-head{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.tip-card-title{font-size:14px;font-weight:500}
+.tip-body{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.tip-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.7;color:var(--text)}
+.tip-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(91,138,245,.18);color:var(--blue);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.tip-bullet{flex-shrink:0;width:6px;height:6px;border-radius:50%;background:var(--blue);margin-top:8px}
+.tip-note{background:rgba(91,138,245,.07);border:1px solid rgba(91,138,245,.18);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--t2);line-height:1.7;margin-top:4px}
+.tip-warn{background:rgba(245,200,66,.07);border:1px solid rgba(245,200,66,.2);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--gold);line-height:1.7;margin-top:4px}
+.coming-soon{text-align:center;padding:60px 20px;color:var(--t3);font-size:14px}
+
 .two-col-grid{display:grid;grid-template-columns:1fr 1fr}
 
 @media(max-width:640px){
   .page{padding:12px}
   .nav{padding:0 12px}
-  .nav-logo{font-size:14px;margin-right:10px}
+  .nav-logo{font-size:14px;margin-right:6px}
   .nav-tab{padding:0 10px;font-size:12px}
+  .nav-tabs-wrap{display:none}
+  .nav-hamburger{display:flex}
+  .nav-cur-page{display:block}
   .battle-grid{grid-template-columns:1fr}
   .row-head,.row{grid-template-columns:46px 1fr 70px 90px}
   .hide-m{display:none}
@@ -291,23 +332,40 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 </div>
 
 <nav class="nav">
-  <div class="nav-logo" style="display:flex;align-items:center;gap:7px"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+  <div class="nav-logo" style="display:flex;align-items:center;gap:7px;flex-shrink:0"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
   <rect x="1" y="1" width="20" height="20" rx="3" fill="#7B4F2E" stroke="#5C3A1E" stroke-width="1.2"/>
   <rect x="3" y="3" width="16" height="7" rx="1.5" fill="#A0673A"/>
   <rect x="3" y="12" width="16" height="7" rx="1.5" fill="#A0673A"/>
   <rect x="9" y="5.5" width="4" height="2" rx="1" fill="#C89060"/>
   <rect x="9" y="14.5" width="4" height="2" rx="1" fill="#C89060"/>
 </svg> 서랍길드</div>
+  <span class="nav-cur-page" id="nav-cur-page">현황판</span>
+  <div class="nav-tabs-wrap" id="nav-tabs-wrap">
+    <button class="nav-tab on" onclick="goPage('dashboard')">📊 현황판</button>
+    <button class="nav-tab" onclick="goPage('entry')">✏️ 결과 입력</button>
+    <button class="nav-tab" onclick="goPage('members')">👥 길드원</button>
+    <button class="nav-tab" onclick="goPage('standard')">🎯 기준치</button>
+    <button class="nav-tab" onclick="goPage('info')">📖 정보</button>
+  </div>
+  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleHamburger()" aria-label="메뉴">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-dropdown-overlay" id="nav-dropdown-overlay" onclick="closeHamburger()"></div>
+<div class="nav-dropdown" id="nav-dropdown">
   <button class="nav-tab on" onclick="goPage('dashboard')">📊 현황판</button>
   <button class="nav-tab" onclick="goPage('entry')">✏️ 결과 입력</button>
   <button class="nav-tab" onclick="goPage('members')">👥 길드원</button>
   <button class="nav-tab" onclick="goPage('standard')">🎯 기준치</button>
-</nav>
+  <button class="nav-tab" onclick="goPage('info')">📖 정보</button>
+</div>
 
 <div id="page-dashboard" class="page on"></div>
 <div id="page-entry" class="page"></div>
 <div id="page-members" class="page"></div>
 <div id="page-standard" class="page"></div>
+<div id="page-info" class="page"></div>
 
 <div class="modal-bg" id="modal-bg" onclick="bgClick(event)">
   <div class="modal">
@@ -358,7 +416,25 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
       <div class="fg">
         <label class="flabel">닉네임</label>
         <input class="finput" id="addm-name" placeholder="닉네임 입력"
-          style="width:100%" onkeydown="if(event.key==='Enter')document.getElementById('addm-power').focus()">
+          style="width:100%" onkeydown="if(event.key==='Enter')document.getElementById('addm-job').focus()">
+      </div>
+      <div class="fg">
+        <label class="flabel">직업</label>
+        <select class="fsel" id="addm-job" style="width:100%">
+          <option value="">직업 선택</option>
+          <option value="히어로">히어로</option>
+          <option value="비숍">비숍</option>
+          <option value="닼나">닼나</option>
+          <option value="섀도어">섀도어</option>
+          <option value="썬콜">썬콜</option>
+          <option value="보마">보마</option>
+          <option value="신궁">신궁</option>
+          <option value="나로">나로</option>
+          <option value="팔라딘">팔라딘</option>
+          <option value="불독">불독</option>
+          <option value="바이퍼">바이퍼</option>
+          <option value="캡틴">캡틴</option>
+        </select>
       </div>
       <div class="fg">
         <label class="flabel">전투력 (조)</label>
@@ -511,8 +587,10 @@ function fbInit(){
       // 첫 로드 시에만 currentId를 Firebase 데이터로 초기화 (하위 호환)
       if(!localState.currentId && data && data.currentId) localState.currentId = data.currentId;
       fbLoaded = true;
+      const jobsChanged = applyJobDefaults();
       renderAll();
       document.getElementById('loading-screen').style.display='none';
+      if(jobsChanged) fbSave();
     } else {
       // 다른 기기에서 변경된 경우만 재렌더
       renderAll();
@@ -644,6 +722,41 @@ function loadLocal(){
   seed(); renderAll();
 }
 
+// ── 직업 ──
+const JOB_LIST = ['히어로','비숍','닼나','섀도어','썬콜','보마','신궁','나로','팔라딘','불독','바이퍼','캡틴'];
+const JOB_COLORS = {
+  '히어로':'#f06565','비숍':'#f5c842','닼나':'#9b7ff5','섀도어':'#b08cf5',
+  '썬콜':'#ff9944','보마':'#3ecf8e','신궁':'#2dd4bf','나로':'#5b8af5','팔라딘':'#6699ff',
+  '불독':'#e07b3a','바이퍼':'#e05a8a','캡틴':'#4db8d4'
+};
+const JOB_MAP = {
+  '블런블':'히어로','v지원v':'비숍','니시스':'닼나','천이스':'섀도어',
+  '너웅':'썬콜','미래팝':'보마','김치감자':'히어로','매미공주':'신궁',
+  '짠도현':'섀도어','씨엔쿤':'보마','굶은':'섀도어','외외':'히어로','의외':'히어로',
+  '차단상태':'나로','씅난당':'썬콜','이중찬':'섀도어','세롱이':'비숍',
+  '잉디잉디':'썬콜','망치깎는노인':'팔라딘','루숑천사v':'섀도어',
+  '하루맨한디거':'신궁','믐므르':'섀도어','악테온':'섀도어','이쿠형아':'비숍',
+  '상상구':'섀도어','이쁜언니':'신궁','Blay':'썬콜','병차니':'섀도어',
+  '나로호소':'섀도어','이도벼리':'비숍','블런블런':'비숍','윤빵쭈':''
+};
+function jobBadge(job){
+  if(!job) return '';
+  const c = JOB_COLORS[job]||'var(--t2)';
+  return `<span class="job-badge" style="color:${c};background:${c}22">${job}</span>`;
+}
+function applyJobDefaults(){
+  if(!S.members) return false;
+  let changed = false;
+  S.members.forEach(m=>{
+    if(!m.job && JOB_MAP[m.name]){ m.job = JOB_MAP[m.name]; changed = true; }
+  });
+  return changed;
+}
+function setJob(name, job){
+  const m = S.members.find(x=>x.name===name);
+  if(m){ m.job = job; save(); }
+}
+
 // ── helpers ──
 function pRank(name){
   if(!S.members||!S.members.length) return null;
@@ -670,11 +783,15 @@ function renderDashboard(){
   if(!S.members) S.members=[];
   const bt = curBattle();
 
-  const btns = [...S.battles].reverse().map(b=>`
-    <button class="battle-btn${b.id===localState.currentId?' on':''}" onclick="selBattle('${b.id}')">
-      <span class="btag ${btagCls(b.type||'길드보스')}">${b.type||'길드보스'}</span>${b.date||''}
-    </button>`).join('') +
-    ``;
+  const curType = bt?.type || BATTLE_TYPES[0];
+  const typeOptions = BATTLE_TYPES.map(t => {
+    const cnt = S.battles.filter(b=>(b.type||'길드보스')===t).length;
+    return `<option value="${t}" ${t===curType?'selected':''}>${t} (${cnt}건)</option>`;
+  }).join('');
+  const battlesOfType = [...S.battles].reverse().filter(b=>(b.type||'길드보스')===curType);
+  const battleOptions = battlesOfType.length
+    ? battlesOfType.map(b=>`<option value="${b.id}" ${b.id===localState.currentId?'selected':''}>${b.date||''}</option>`).join('')
+    : `<option value="">기록 없음</option>`;
 
   let body = `<div style="text-align:center;padding:48px;color:var(--t3)">대결을 선택하세요</div>`;
 
@@ -732,8 +849,9 @@ function renderDashboard(){
           const diffCol = r.diff===null?'var(--t3)':r.diff>0?'var(--green)':r.diff<0?'var(--red)':'var(--t3)';
           return `<div class="row ${rowCls}" style="grid-template-columns:46px 1fr 80px 80px 90px">
             <div class="cell" style="font-size:12px;font-weight:700;color:var(--text);white-space:nowrap">${r.pr}위</div>
-            <div class="cell" style="gap:6px;flex-wrap:wrap">
+            <div class="cell" style="gap:5px;flex-wrap:wrap">
               <span style="font-size:13px;font-weight:500">${r.name}</span>
+              ${jobBadge(S.members.find(m=>m.name===r.name)?.job||'')}
               <span style="font-size:11px;font-weight:600;color:var(--text)">${fmtPower(r.power)}</span>
             </div>
             <div class="cell" style="justify-content:flex-end;font-size:12px;color:var(--t3)">${r.expected!==null?r.expected+'억':'—'}</div>
@@ -762,14 +880,25 @@ function renderDashboard(){
   }
 
   document.getElementById('page-dashboard').innerHTML = `
-    <div class="battle-bar-wrap"><div class="battle-bar">${btns}</div></div>
+    <div style="display:flex;gap:10px;margin-bottom:22px;align-items:center">
+      <div class="fg" style="flex:1;max-width:160px">
+        <label class="flabel">대전 선택</label>
+        <select class="fsel" style="width:100%" onchange="dashTypeChange(this.value)">${typeOptions}</select>
+      </div>
+      <div class="fg" style="flex:1;max-width:160px">
+        <label class="flabel">대전 기록</label>
+        <select class="fsel" style="width:100%" onchange="selBattle(this.value)">${battleOptions}</select>
+      </div>
+    </div>
     ${body}`;
-
-  const onBtn = document.querySelector('.battle-bar .battle-btn.on');
-  if(onBtn) onBtn.scrollIntoView({block:'nearest', inline:'nearest'});
 }
 
-function selBattle(id){ localState.currentId=id; renderDashboard(); }
+function selBattle(id){ if(!id||id==='') return; localState.currentId=id; renderDashboard(); }
+function dashTypeChange(type){
+  const latest = [...S.battles].reverse().find(b=>(b.type||'길드보스')===type);
+  localState.currentId = latest?.id || null;
+  renderDashboard();
+}
 
 // ══════════════════════════════════════════════
 //  ENTRY PAGE
@@ -1084,7 +1213,13 @@ function renderMembersPage(){
   const makeRow = (m, i) => `
     <div class="mt-row" style="grid-template-columns:46px 1fr 1fr 1fr">
       <div style="font-size:13px;font-weight:700;color:var(--text)">${i+1}위</div>
-      <div><input class="name-edit" value="${m.name}" id="mn-idx-${i}" onblur="upName('${m.name}',this.value)"></div>
+      <div>
+        <input class="name-edit" value="${m.name}" id="mn-idx-${i}" onblur="upName('${m.name}',this.value)">
+        <select class="job-sel" onchange="setJob('${m.name}',this.value)">
+          <option value="">직업 선택</option>
+          ${JOB_LIST.map(j=>`<option value="${j}" ${m.job===j?'selected':''}>${j}</option>`).join('')}
+        </select>
+      </div>
       <div style="font-size:12px;color:var(--t2)">
         ${m.prevPower?`<span style="color:var(--t2)">${fmtPower(m.prevPower)}</span><span style="color:var(--t3);margin-left:4px">(${m.prevPowerDate||''})</span>`:'<span style="color:var(--t3)">-</span>'}
       </div>
@@ -1182,10 +1317,11 @@ function closeAddMember(){
 function confirmAddMember(){
   const name=document.getElementById('addm-name').value.trim();
   if(!name){showToast('닉네임을 입력하세요');return;}
+  const job=document.getElementById('addm-job').value;
   const powerVal=parseFloat(document.getElementById('addm-power').value)||0;
   const now=new Date();
   const powerDate=powerVal>0?(now.getMonth()+1).toString().padStart(2,'0')+'/'+(now.getDate()).toString().padStart(2,'0'):'';
-  S.members.push({name,power:powerVal,powerDate,prevPower:0,prevPowerDate:''});
+  S.members.push({name,job,power:powerVal,powerDate,prevPower:0,prevPowerDate:''});
   closeAddMember();
   save();renderMembersPage();
   showToast(name+' 추가 완료!');
@@ -1382,6 +1518,437 @@ function confirmAddRange(){
 }
 
 // ══════════════════════════════════════════════
+//  INFO PAGE (전투 팁 정보)
+// ══════════════════════════════════════════════
+let infoTab = '대항전';
+const INFO_TABS = ['대항전','토벌전','길드보스','수련장'];
+
+const INFO_TIPS = {
+  '대항전': `
+    <div class="tip-card">
+      <div class="tip-card-head">
+        <span class="tag tag-daehang">대항전</span>
+        <span class="tip-card-title">길드 대항전 가이드 영상</span>
+      </div>
+      <div class="tip-body">
+        <a href="https://www.youtube.com/watch?v=1uBUlPH_hY0" target="_blank" rel="noopener" style="display:block;text-decoration:none">
+          <div style="position:relative;border-radius:10px;overflow:hidden;background:#000;cursor:pointer;border:1px solid var(--border2);transition:border-color .15s" onmouseover="this.style.borderColor='#ff4444'" onmouseout="this.style.borderColor='var(--border2)'">
+            <img src="https://img.youtube.com/vi/1uBUlPH_hY0/hqdefault.jpg" alt="길드 대항전 가이드" style="width:100%;display:block;opacity:.88">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+              <div style="width:56px;height:56px;background:rgba(255,0,0,.9);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.5)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.8))">
+              <div style="font-size:13px;font-weight:500;color:#fff">길드 대항전 공략 가이드 (길마 제작)</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:3px">YouTube에서 보기 →</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head" style="gap:10px;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="tip-card-title">핵심 시스템 메커니즘</span>
+        </div>
+        <span style="font-size:11px;color:var(--t3);flex-shrink:0">00:21</span>
+      </div>
+      <div class="tip-body">
+        <div class="tip-item">
+          <div class="tip-num">1</div>
+          <div><span style="color:var(--teal);font-weight:600">[시간 추가]</span> 보스 처치 시 제한시간 <strong>+20초</strong> 추가 (최대 35초 캡). 아래 타이밍 포인트 참조!!</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">2</div>
+          <div><span style="color:var(--teal);font-weight:600">[데미지 버프]</span> 일반 몹 처치 시 보스 데미지 <strong>+1 버프</strong> 누적 (매턴 6마리 추가). 20초 이내에 다음 몹을 잡지 못하면 버프 초기화되니 사이클 유지 필수.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">3</div>
+          <div><span style="color:var(--teal);font-weight:600">[막타 점수]</span> 대항전 점수의 핵심은 보스의 <strong>마지막 타격(처치)</strong>. 한방 딜 스킬과 육각수 스택을 활용한 막타 컨트롤이 고점의 열쇠.</div>
+        </div>
+        <div class="tip-note">💡 <strong>타이밍 포인트</strong> — +20초 추가 시 최대 35초 캡이 있으므로, <strong>남은 시간 14초 이전</strong>에 보스를 처치해야 시간 손해 없이 최대치(34~35초)를 유지할 수 있어요.<br>특히 초반 육각수 3스택 쌓는 구간엔 타이머를 주시하면서 <strong>14초 라인</strong>을 기준으로 처치 타이밍을 잡는 것이 핵심입니다.</div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head" style="justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="tip-card-title">세팅 정보</span>
+        </div>
+        <span style="font-size:11px;color:var(--t3);flex-shrink:0">00:30 ~ 01:13</span>
+      </div>
+      <div class="tip-body">
+        <div style="font-size:12px;color:var(--t3);margin-bottom:8px">영상에서 확인할 수 있는 세팅 정보입니다.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:var(--s2);border:1px dashed var(--border2);border-radius:9px;padding:14px;min-height:80px;display:flex;flex-direction:column;gap:6px">
+            <div style="font-size:11px;color:var(--blue);font-weight:600;margin-bottom:2px">동료 배치</div>
+            <div style="font-size:12px;color:var(--t3)">추후 업데이트 예정</div>
+          </div>
+          <div style="background:var(--s2);border:1px dashed var(--border2);border-radius:9px;padding:14px;min-height:80px;display:flex;flex-direction:column;gap:6px">
+            <div style="font-size:11px;color:var(--blue);font-weight:600;margin-bottom:2px">유물 조합</div>
+            <div style="font-size:12px;color:var(--t3)">추후 업데이트 예정</div>
+          </div>
+          <div style="background:var(--s2);border:1px dashed var(--border2);border-radius:9px;padding:14px;min-height:80px;display:flex;flex-direction:column;gap:6px;grid-column:1/-1">
+            <div style="font-size:11px;color:var(--blue);font-weight:600;margin-bottom:2px">어빌리티 세팅</div>
+            <div style="font-size:12px;color:var(--t3)">추후 업데이트 예정</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head" style="justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="tip-card-title">실전 플레이 팁</span>
+        </div>
+        <span style="font-size:11px;color:var(--t3);flex-shrink:0">01:14 ~ 종료</span>
+      </div>
+      <div class="tip-body">
+        <div class="tip-item">
+          <div class="tip-num">1</div>
+          <div><span style="color:var(--gold);font-weight:600">[오토 해제]</span> 던전 진입 즉시 Auto(자동 전투) 모드를 <strong>반드시 OFF</strong>로 전환할 것 (수동 컨트롤 필수).</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">2</div>
+          <div><span style="color:var(--gold);font-weight:600">[초반 빌드업]</span> 1~3페이지 초반 구간은 보스가 약하므로, 빠르게 잡기보다 후반 딜몰이를 위한 <strong>육각수 3스택</strong>을 안전하게 쌓는 데 집중.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">3</div>
+          <div><span style="color:var(--gold);font-weight:600">[막타 타이밍]</span> 4페이지 이후 보스가 단단해지는 시점부터 본격 점수 뻥튀기 돌입. 스킬 쿨타임을 계산하여 보스 <strong>그로기 타이밍</strong>에 맞춰 강력한 스킬로 막타를 칠 것.</div>
+        </div>
+        <div class="tip-warn">⚠️ 오토를 켜면 막타 컨트롤이 불가능해서 점수 손해가 큽니다. 수동 플레이가 핵심입니다.</div>
+      </div>
+    </div>
+  `,
+  '토벌전': `
+    <div class="tip-card">
+      <div class="tip-card-head">
+        <span class="tag tag-tobul">토벌전</span>
+        <span class="tip-card-title">길드 토벌전 공략 영상</span>
+      </div>
+      <div class="tip-body">
+        <a href="https://youtu.be/WqpiiKm7Fo4?si=IbCF8tcg4IictCyn" target="_blank" rel="noopener" style="display:block;text-decoration:none">
+          <div style="position:relative;border-radius:10px;overflow:hidden;background:#000;cursor:pointer;border:1px solid var(--border2);transition:border-color .15s" onmouseover="this.style.borderColor='#ff4444'" onmouseout="this.style.borderColor='var(--border2)'">
+            <img src="https://img.youtube.com/vi/WqpiiKm7Fo4/hqdefault.jpg" alt="길드 토벌전 공략" style="width:100%;display:block;opacity:.88">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+              <div style="width:56px;height:56px;background:rgba(255,0,0,.9);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.5)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.8))">
+              <div style="font-size:13px;font-weight:500;color:#fff">길드 토벌전 공략 가이드</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:3px">YouTube에서 보기 →</div>
+            </div>
+          </div>
+        </a>
+        <div class="tip-warn">⚠️ 약 한 달 전 제작된 영상으로, <strong>바이퍼 동료</strong> 및 <strong>신규 유물</strong>이 반영되지 않았을 수 있어요. 세팅 참고 시 최신 업데이트 내용을 함께 확인하세요.</div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head" style="justify-content:space-between">
+        <span class="tip-card-title">핵심 세팅 스펙</span>
+        <span style="font-size:11px;color:var(--t3);flex-shrink:0">00:17 ~ 00:55</span>
+      </div>
+      <div class="tip-body">
+        <div class="tip-item">
+          <div class="tip-num">1</div>
+          <div><span style="color:var(--purple);font-weight:600">[장비 프리셋]</span> 보스 데미지, 크리티컬 확률/데미지, 공격력, 최소/최대 데미지 위주로 세팅.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">2</div>
+          <div><span style="color:var(--purple);font-weight:600">[동료 메인]</span> <strong>섀도어 > 나이트로드 > 비숍 > 보우마스터 > 히어로</strong> 순 추천.<br>
+          <span style="font-size:12px;color:var(--t2)">토벌전 보스는 버프가 많아 디버프를 걸 수 있는 섀도어가 딜 효율 면에서 압도적으로 유리.</span></div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">3</div>
+          <div><span style="color:var(--purple);font-weight:600">[동료 효과]</span> <strong>신궁 > 보우마스터 > 나이트로드 > 히어로 > 섀도어 > 팔라딘</strong> 순 추천 (크리 100% 기준).<br>
+          <span style="font-size:12px;color:var(--t2)">보스에게 상태이상을 두 번 걸 수 있는 던전 특성상 신궁이 매우 효율적.</span></div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">4</div>
+          <div><span style="color:var(--purple);font-weight:600">[어빌리티]</span> 방어 관통력 → 보스 데미지 → 최대/최소 데미지 → 주 스탯 → 공격 속도 → 데미지(450% 이하) 순 우선순위.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">5</div>
+          <div><span style="color:var(--purple);font-weight:600">[유물 프리셋]</span> 육각 목걸이(필수), 별의 돌, 고대의 책, 고대문서 조각, 성배, 감정의 물병, 오래된 장갑, 아르헨, 명약, 유리구두.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head" style="justify-content:space-between">
+        <span class="tip-card-title">실전 플레이 및 컨트롤 팁</span>
+        <span style="font-size:11px;color:var(--t3);flex-shrink:0">01:03 ~ 종료</span>
+      </div>
+      <div class="tip-body">
+        <div class="tip-item">
+          <div class="tip-num">1</div>
+          <div><span style="color:var(--gold);font-weight:600">[기본 운영]</span> 진입 후 기본 공격을 계속 누르면서 버프와 공격 스킬을 하나씩 순차적으로 연계.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">2</div>
+          <div><span style="color:var(--gold);font-weight:600">[대쉬 스킬 유의]</span> 대쉬 스킬은 데미지가 강력하지만, 수동 컨트롤이 숙련되지 않았거나 동선이 꼬인다면 <strong>과감하게 프리셋에서 제외</strong>하는 것을 추천. <span style="font-size:11px;color:var(--t3)">(01:24)</span></div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">3</div>
+          <div><span style="color:var(--gold);font-weight:600">[메테오 리트 조건]</span> 보스가 떨어뜨리는 <strong>메테오를 맞으면 최종 데미지 대폭 감소</strong>. 초중반에 맞았다면 즉시 <strong>리트라이</strong>하는 것이 이득. <span style="font-size:11px;color:var(--t3)">(01:28)</span></div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">4</div>
+          <div><span style="color:var(--gold);font-weight:600">[육각 목걸이]</span> 유물 효과 스택을 반드시 <strong>최종 3스택까지 안정적으로 유지</strong>. <span style="font-size:11px;color:var(--t3)">(01:34)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head">
+        <span class="tip-card-title">결정체 활용 — 점수 폭사 타이밍</span>
+      </div>
+      <div class="tip-body">
+        <div class="tip-item">
+          <div class="tip-num">1</div>
+          <div><span style="color:var(--teal);font-weight:600">[결정체 킵하기]</span> 맵에 노란색 <strong>에너지 결정체</strong>가 나타나도 <strong>절대 바로 먹지 않는 것이 핵심</strong>. 결정체 획득 시 보스가 그로기되므로 원하는 타이밍에 전략적으로 활용. <span style="font-size:11px;color:var(--t3)">(01:47)</span></div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">2</div>
+          <div><span style="color:var(--teal);font-weight:600">[연계 컨트롤]</span> 모든 버프/스킬 스택이 완벽히 쌓인 상태에서 <strong>동료 소환과 동시에 결정체 획득</strong> → 보스 그로기 → 극딜 집중. <span style="font-size:11px;color:var(--t3)">(02:14)</span></div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">3</div>
+          <div><span style="color:var(--teal);font-weight:600">[연쇄 홀딩]</span> 첫 번째 그로기가 완전히 풀리는 타이밍을 기다렸다가, 곧바로 <strong>두 번째 결정체</strong>를 먹어 연속으로 묶어두고 프리딜 이어가기. 최고점 달성의 핵심. <span style="font-size:11px;color:var(--t3)">(02:31)</span></div>
+        </div>
+        <div class="tip-note">💡 결정체를 전략적으로 킵 → 스택 완성 → 동료 소환 + 결정체 연계 → 연쇄 그로기 홀딩이 토벌전 고점의 핵심 루틴입니다.</div>
+      </div>
+    </div>
+  `,
+  '수련장': `
+    <div class="tip-card">
+      <div class="tip-card-head">
+        <span class="tag tag-training">수련장</span>
+        <span class="tip-card-title">길드 수련장 공략 영상</span>
+      </div>
+      <div class="tip-body">
+        <a href="https://youtu.be/_kNMa5mNP-I?si=4VnEfMfQQRYi6Clq" target="_blank" rel="noopener" style="display:block;text-decoration:none">
+          <div style="position:relative;border-radius:10px;overflow:hidden;background:#000;cursor:pointer;border:1px solid var(--border2);transition:border-color .15s" onmouseover="this.style.borderColor='#ff4444'" onmouseout="this.style.borderColor='var(--border2)'">
+            <img src="https://img.youtube.com/vi/_kNMa5mNP-I/hqdefault.jpg" alt="길드 수련장 공략" style="width:100%;display:block;opacity:.88">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+              <div style="width:56px;height:56px;background:rgba(255,0,0,.9);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.5)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.8))">
+              <div style="font-size:13px;font-weight:500;color:#fff">길드 수련장 공략 가이드</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:3px">YouTube에서 보기 →</div>
+            </div>
+          </div>
+        </a>
+        <div class="tip-warn">⚠️ 약 한 달 전 제작된 영상으로, <strong>바이퍼 동료</strong> 및 <strong>신규 유물</strong>이 반영되지 않았을 수 있어요. 세팅 참고 시 최신 업데이트 내용을 함께 확인하세요.</div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head" style="justify-content:space-between">
+        <span class="tip-card-title">추천 세팅 스펙</span>
+        <span style="font-size:11px;color:var(--t3);flex-shrink:0">초반 ~ 중반</span>
+      </div>
+      <div class="tip-body">
+        <div class="tip-item">
+          <div class="tip-num">1</div>
+          <div><span style="color:var(--purple);font-weight:600">[프리셋 타겟]</span> 수련장은 제한 시간 동안 <strong>말뚝 프리딜</strong> 구조이므로, 생존·유틸리티 배제하고 <strong>단일 최종 데미지 + 지속 딜링</strong>에 올인하는 프리셋 구성 필수.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">2</div>
+          <div><span style="color:var(--purple);font-weight:600">[추천 동료]</span> 단일 대상 디버퍼(방어력 감소 / 받는 피해 증가) 및 <strong>치명타 피해 버프</strong> 보유한 0티어 동료 중심 배치.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">3</div>
+          <div><span style="color:var(--purple);font-weight:600">[어빌리티]</span> 1순위 <strong>방어율 관통 + 보스 데미지</strong>로 방어 스펙 상쇄 후, 남는 자리에 최대/최소 데미지 + 공격 속도 균형 분배.</div>
+        </div>
+        <div style="margin-top:4px">
+          <div style="font-size:12px;color:var(--t3);margin-bottom:8px">세팅 상세 정보 (추후 업데이트)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="background:var(--s2);border:1px dashed var(--border2);border-radius:9px;padding:14px;min-height:70px;display:flex;flex-direction:column;gap:4px">
+              <div style="font-size:11px;color:var(--green);font-weight:600;margin-bottom:2px">유물 조합</div>
+              <div style="font-size:12px;color:var(--t3)">추후 업데이트 예정</div>
+            </div>
+            <div style="background:var(--s2);border:1px dashed var(--border2);border-radius:9px;padding:14px;min-height:70px;display:flex;flex-direction:column;gap:4px">
+              <div style="font-size:11px;color:var(--green);font-weight:600;margin-bottom:2px">동료 배치</div>
+              <div style="font-size:12px;color:var(--t3)">추후 업데이트 예정</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head">
+        <span class="tip-card-title">실전 말뚝딜 및 자원 관리 팁</span>
+      </div>
+      <div class="tip-body">
+        <div class="tip-item">
+          <div class="tip-num">1</div>
+          <div><span style="color:var(--gold);font-weight:600">[예열 및 버프 타이밍]</span> 전투 시작 직후 스택형 유물(육각 목걸이 등)과 동료 지속 버프가 <strong>풀스택으로 예열</strong>될 때까지 주요 딜링 스킬 아껴두기.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">2</div>
+          <div><span style="color:var(--gold);font-weight:600">[쿨타임 정렬]</span> 쿨타임 긴 강력한 액티브 스킬은 동료 소환 버프 + 캐릭터 극딜 버프 지속시간이 <strong>겹치는 시너지 타이밍</strong>에 한꺼번에 묶어서 수동 시전이 고점의 핵심.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">3</div>
+          <div><span style="color:var(--gold);font-weight:600">[포지셔닝]</span> 불필요한 이동·대쉬 스킬 동선 꼬임을 최소화하고, 허수아비와 <strong>일직선 또는 최적 타격 거리 고정 운영</strong>이 중요.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head">
+        <span class="tip-card-title">최고점 갱신 체크리스트</span>
+      </div>
+      <div class="tip-body">
+        <div class="tip-item">
+          <div class="tip-bullet" style="background:var(--green)"></div>
+          <div>던전 진입 즉시 <strong>수동 컨트롤 모드</strong>로 전환 후 최적 딜 사이클 돌리기.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-bullet" style="background:var(--green)"></div>
+          <div>버프·디버프 창 상시 확인 — <strong>방어력 감소</strong> 등 핵심 효과가 끊기지 않고 무한 유지되는지 모니터링.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-bullet" style="background:var(--green)"></div>
+          <div>스킬 시전 순서(메커니즘)에 따라 총 누적 딜량이 <strong>수억 단위 차이</strong> 발생 — 최적 연계 사이클 완성까지 반복 측정 및 빌드 최적화.</div>
+        </div>
+        <div class="tip-note">💡 수련장 고점의 핵심은 <strong>풀스택 예열 → 시너지 타이밍 쿨다운 정렬 → 고정 포지션 프리딜</strong> 루틴의 반복입니다.</div>
+      </div>
+    </div>
+  `,
+  '길드보스': `
+    <div class="tip-card">
+      <div class="tip-card-head">
+        <span class="tag tag-boss">길드보스</span>
+        <span class="tip-card-title">길드 보스대전 가이드 영상</span>
+      </div>
+      <div class="tip-body">
+        <a href="https://youtu.be/OS2-0SsXvbo?si=RhlPof_nmvBXWJGf" target="_blank" rel="noopener" style="display:block;text-decoration:none">
+          <div style="position:relative;border-radius:10px;overflow:hidden;background:#000;cursor:pointer;border:1px solid var(--border2);transition:border-color .15s" onmouseover="this.style.borderColor='#ff4444'" onmouseout="this.style.borderColor='var(--border2)'">
+            <img src="https://img.youtube.com/vi/OS2-0SsXvbo/hqdefault.jpg" alt="길드 보스대전 가이드" style="width:100%;display:block;opacity:.88">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+              <div style="width:56px;height:56px;background:rgba(255,0,0,.9);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.5)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.8))">
+              <div style="font-size:13px;font-weight:500;color:#fff">길드 보스대전 공략 가이드</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:3px">YouTube에서 보기 →</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head" style="justify-content:space-between">
+        <span class="tip-card-title">추천 세팅 스펙</span>
+        <span style="font-size:11px;color:var(--t3);flex-shrink:0">초반 ~ 중반</span>
+      </div>
+      <div class="tip-body">
+        <div class="tip-item">
+          <div class="tip-num">1</div>
+          <div><span style="color:var(--purple);font-weight:600">[프리셋 최적화]</span> 광역 패턴 회피와 단일 타겟 누적 딜을 동시에 요구하므로, <strong>보스 공격력 + 치명타 시너지</strong>를 극한으로 끌어올리는 세팅 필수.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">2</div>
+          <div><span style="color:var(--purple);font-weight:600">[추천 동료]</span> 보스 <strong>방어력 감소 디버퍼</strong> + 아군 전체 공격 속도/최종 데미지 증폭 <strong>버프형 동료</strong>를 최우선 배치.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">3</div>
+          <div><span style="color:var(--purple);font-weight:600">[어빌리티]</span> <strong>방어율 관통</strong> 베이스 + <strong>보스 데미지 증가</strong> + 최대/최소 데미지 균등 분배 순 우선순위.</div>
+        </div>
+        <div style="margin-top:4px">
+          <div style="font-size:12px;color:var(--t3);margin-bottom:8px">세팅 상세 정보 (추후 업데이트)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="background:var(--s2);border:1px dashed var(--border2);border-radius:9px;padding:14px;min-height:70px;display:flex;flex-direction:column;gap:4px">
+              <div style="font-size:11px;color:var(--gold);font-weight:600;margin-bottom:2px">유물 조합</div>
+              <div style="font-size:12px;color:var(--t3)">추후 업데이트 예정</div>
+            </div>
+            <div style="background:var(--s2);border:1px dashed var(--border2);border-radius:9px;padding:14px;min-height:70px;display:flex;flex-direction:column;gap:4px">
+              <div style="font-size:11px;color:var(--gold);font-weight:600;margin-bottom:2px">동료 라인업</div>
+              <div style="font-size:12px;color:var(--t3)">추후 업데이트 예정</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head">
+        <span class="tip-card-title">실전 패턴 대응 및 수동 조작 팁</span>
+      </div>
+      <div class="tip-body">
+        <div class="tip-item">
+          <div class="tip-num">1</div>
+          <div><span style="color:var(--gold);font-weight:600">[오토 해제 및 진입]</span> 입장 즉시 자동 전투 OFF → 수동 전환. 육각 스택 등 <strong>버프/유물 스택이 안정적으로 예열</strong>될 때까지 기본 스킬 쿨타임 조율.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">2</div>
+          <div><span style="color:var(--gold);font-weight:600">[광역 패턴 대처]</span> 밀쳐내기·장판 등 메이저 패턴 타이밍을 숙지하고, <strong>대쉬 또는 무적/유틸 스킬을 연계</strong>해 딜로스 없이 씹어주는 것이 포인트.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">3</div>
+          <div><span style="color:var(--gold);font-weight:600">[그로기 딜몰이]</span> 기믹 파쇄 후 보스 무력화(그로기) 타이밍에 <strong>동료 소환 버프 + 주력 한방 액티브 스킬</strong>을 한꺼번에 쏟아붓는 시너지 정렬 딜링이 최고점 달성의 핵심.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-card-head">
+        <span class="tip-card-title">최고점 공략 체크리스트</span>
+      </div>
+      <div class="tip-body">
+        <div class="tip-item">
+          <div class="tip-bullet" style="background:var(--gold)"></div>
+          <div>보스 <strong>디버프 면역 타이밍</strong>을 피해 방깎/피증 효과가 <strong>풀스택</strong>으로 들어간 순간 극딜 집중.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-bullet" style="background:var(--gold)"></div>
+          <div>초반 패턴 대응 실패로 주요 딜러 동료 급사 또는 딜 사이클이 심하게 꼬였다면 즉시 <strong>리트라이</strong>로 기회 비용 절약.</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-bullet" style="background:var(--gold)"></div>
+          <div>제한 시간 마감 직전 보스 <strong>막타 타이밍</strong>에 강력한 한방 딜을 우겨넣어 마지막 소숫점 점수까지 복사.</div>
+        </div>
+        <div class="tip-note">💡 보스 대전 고점의 핵심은 <strong>풀스택 예열 → 그로기 타이밍 시너지 정렬 → 막타 딜 우겨넣기</strong> 루틴입니다.</div>
+      </div>
+    </div>
+  `,
+};
+
+function renderInfoPage(){
+  const tabs = INFO_TABS.map(t=>`
+    <button class="info-tab${t===infoTab?' on':''}" onclick="selInfoTab('${t}')">${t}</button>
+  `).join('');
+
+  const sections = INFO_TABS.map(t=>{
+    const content = INFO_TIPS[t]
+      ? `<div class="info-section${t===infoTab?' on':''}" id="info-sec-${t}">${INFO_TIPS[t]}</div>`
+      : `<div class="info-section${t===infoTab?' on':''}" id="info-sec-${t}"><div class="coming-soon">🛠️ 준비 중이에요</div></div>`;
+    return content;
+  }).join('');
+
+  document.getElementById('page-info').innerHTML = `
+    <div class="sec-title" style="margin-bottom:18px">전투 팁 정보</div>
+    <div class="info-tab-bar">${tabs}</div>
+    ${sections}`;
+}
+
+function selInfoTab(t){
+  infoTab = t;
+  renderInfoPage();
+}
+
+// ══════════════════════════════════════════════
 //  NAV + INIT
 // ══════════════════════════════════════════════
 function showToast(msg){
@@ -1394,7 +1961,7 @@ let _authenticated = false;
 let _pendingPage = null;
 
 function goPage(name){
-  if(name !== 'dashboard' && !_authenticated){
+  if(name !== 'dashboard' && name !== 'info' && !_authenticated){
     _pendingPage = name;
     document.getElementById('pw-input').value='';
     document.getElementById('pw-error').textContent='';
@@ -1404,6 +1971,7 @@ function goPage(name){
   }
   _showPage(name);
 }
+const PAGE_LABELS = {dashboard:'현황판',entry:'결과 입력',members:'길드원',standard:'기준치',info:'정보'};
 function _showPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('on'));
@@ -1411,10 +1979,27 @@ function _showPage(name){
   document.querySelectorAll('.nav-tab').forEach(t=>{
     if(t.getAttribute('onclick').includes(name))t.classList.add('on');
   });
+  const lbl = document.getElementById('nav-cur-page');
+  if(lbl) lbl.textContent = PAGE_LABELS[name]||'';
+  closeHamburger();
   if(name==='dashboard')renderDashboard();
   if(name==='entry')renderEntryPage();
   if(name==='members')renderMembersPage();
   if(name==='standard')renderStandardPage();
+  if(name==='info')renderInfoPage();
+}
+function toggleHamburger(){
+  const hb = document.getElementById('nav-hamburger');
+  const dd = document.getElementById('nav-dropdown');
+  const ov = document.getElementById('nav-dropdown-overlay');
+  const isOpen = dd.classList.contains('open');
+  if(isOpen){ closeHamburger(); }
+  else { hb.classList.add('open'); dd.classList.add('open'); ov.classList.add('open'); }
+}
+function closeHamburger(){
+  document.getElementById('nav-hamburger')?.classList.remove('open');
+  document.getElementById('nav-dropdown')?.classList.remove('open');
+  document.getElementById('nav-dropdown-overlay')?.classList.remove('open');
 }
 function closePwModal(){
   document.getElementById('pw-modal-bg').classList.remove('open');
