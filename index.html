@@ -1862,15 +1862,27 @@ const INFO_TIPS = {
           <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/1.jpeg')">
             <img src="public/boss_match/1.jpeg" alt="보스 메커니즘" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
             <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
-              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">브레스 패턴 & 무력화 흐름</div>
-              <div style="font-size:11px;color:var(--t2);line-height:1.6">왼쪽 브레스→HP%, 오른쪽 브레스→MP% 소모 / 브레스 3회 후 보라색 장판, 6회 후 받는피해감소 버프→장판→무력화 순서로 진행</div>
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">브레스 패턴 & 무력화 흐름</div>
+              <div style="font-size:11px;color:var(--t2);line-height:1.9;display:flex;flex-direction:column;gap:1px">
+                <div>1. 왼쪽 브레스 → 최대HP의 %만큼 HP 소모 + 체력물약 쿨 증가</div>
+                <div>2. 오른쪽 브레스 → 최대MP의 %만큼 MP 소모 + 마나물약 쿨 증가</div>
+                <div>3. 맞을수록 소모 %가 상승 — 맞지 않는 게 핵심</div>
+                <div>4. 브레스 3회 후 → 보라색 장판 발동 (맞으면 HP 손해)</div>
+                <div>5. 브레스 6회 후 → 받는피해감소 버프 → 장판 → <span style="color:var(--teal)">무력화</span> 순으로 반복</div>
+              </div>
             </div>
           </div>
           <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/2.jpeg')">
             <img src="public/boss_match/2.jpeg" alt="보스 핵심 팁" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
             <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
-              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">핵심 생존 & 점수 팁</div>
-              <div style="font-size:11px;color:var(--t2);line-height:1.6">절대 죽으면 안됨(버프 증발) / 보라색 장판 회피 / 구슬 생성 즉시 수집 / MP 부족 시 공속·스킬레벨→데미지류 세팅으로 전환</div>
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">핵심 생존 & 점수 팁</div>
+              <div style="font-size:11px;color:var(--t2);line-height:1.9;display:flex;flex-direction:column;gap:1px">
+                <div>1. <span style="color:var(--red)">절대 죽으면 안됨</span> → 죽으면 모든 버프 즉시 증발</div>
+                <div>2. 보라색 장판 절대 맞으면 안됨 → HP 낭비 + 누적 페널티</div>
+                <div>3. 브레스 때 생성되는 구슬 → 즉시 수집 (보스데미지 증가 버프)</div>
+                <div>4. MP 부족 시 공속·스킬레벨 세팅 → 데미지류 세팅으로 전환</div>
+                <div>5. 뱀 사거리 끝에서 구슬 빠르게 먹기 가능 — 영상 참고</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1886,15 +1898,25 @@ const INFO_TIPS = {
           <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/3.jpeg')">
             <img src="public/boss_match/3.jpeg" alt="브레스 방향 판단" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
             <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
-              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">왼/오른쪽 브레스 방향 판단법</div>
-              <div style="font-size:11px;color:var(--t2);line-height:1.6">캐릭터 시선(가만히 있을 때 바라보는 방향) 기준으로 왼/오른쪽이 결정됨 — 어느 뱀이 타격하는지 캐릭터 시선으로 판단</div>
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">왼/오른쪽 브레스 방향 판단법</div>
+              <div style="font-size:11px;color:var(--t2);line-height:1.9;display:flex;flex-direction:column;gap:1px">
+                <div>1. 기준: 캐릭터가 <span style="color:var(--text)">가만히 있을 때 바라보는 방향</span>이 기준</div>
+                <div>2. 그 시선 기준으로 <span style="color:var(--red)">왼쪽 뱀</span>이 타격 → 왼쪽 브레스 (HP 소모)</div>
+                <div>3. 그 시선 기준으로 <span style="color:var(--blue)">오른쪽 뱀</span>이 타격 → 오른쪽 브레스 (MP 소모)</div>
+                <div>4. 가만히 있으면서 캐릭터 시선 확인 후 피할 방향 판단</div>
+              </div>
             </div>
           </div>
           <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/4.jpeg')">
             <img src="public/boss_match/4.jpeg" alt="브레스 회피 포지셔닝" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
             <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
-              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">대쉬 회피 포지셔닝</div>
-              <div style="font-size:11px;color:var(--t2);line-height:1.6">대쉬기 보유자는 브레스 쿨타임 확인하면서 미리 뒤로 빠져 대기 / 왼쪽 브레스 3회 맞고 바로 HP물약 쓰면 연속 3회 더 맞을 수 있어 주의</div>
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">대쉬 회피 포지셔닝</div>
+              <div style="font-size:11px;color:var(--t2);line-height:1.9;display:flex;flex-direction:column;gap:1px">
+                <div>1. 대쉬기 보유자 → 브레스 쿨타임 보면서 미리 뒤로 빠져 대기</div>
+                <div>2. <span style="color:var(--red)">왼쪽 브레스 3회 맞은 직후 HP물약 사용 금지</span></div>
+                <div>   → 물약 쿨 증가 상태라 연속 3회 더 맞을 수 있음</div>
+                <div>3. MP통은 hp통보다 늘리는 게 유리 (뱀 데미지는 % 기반)</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1910,23 +1932,35 @@ const INFO_TIPS = {
           <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/5.jpeg')">
             <img src="public/boss_match/5.jpeg" alt="동료 세팅 기본 구성" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
             <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
-              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">메인/서브 동료 구성 & 명약 활용</div>
-              <div style="font-size:11px;color:var(--t2);line-height:1.6">메인: 받는피해감소 버프제거 가능 동료 / 서브: 신궁(무력화 보스 1티어) 포함 데미지류 / 명약+불독2렙 조합이 명약+새도1렙보다 점수 높음</div>
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">메인/서브 동료 구성 & 명약 활용</div>
+              <div style="font-size:11px;color:var(--t2);line-height:1.9;display:flex;flex-direction:column;gap:1px">
+                <div>1. 메인: 뱀 <span style="color:var(--text)">받는피해감소 버프제거</span> 가능한 동료 필수</div>
+                <div>2. 서브: <span style="color:var(--teal)">신궁</span>(무력화 보스 1티어) 포함 데미지류 동료</div>
+                <div>3. 명약 있을 경우 → 명약 끼고 가장 센 동료로 조합</div>
+                <div>4. 명약+불독2렙 vs 명약+새도1렙 → <span style="color:var(--green)">명약+불독2렙이 점수 더 높음</span></div>
+                <div>5. 개인 스펙·동료·유물에 따라 직접 비교 테스트 추천</div>
+              </div>
             </div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
             <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/6.jpeg')">
               <img src="public/boss_match/6.jpeg" alt="보마 공속 조절" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
               <div style="padding:6px 10px;background:var(--s2);border-top:1px solid var(--border)">
-                <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">보마(공속) 동료 주의사항</div>
-                <div style="font-size:10px;color:var(--t2);line-height:1.5">MP 관리가 안 되면 보마 공속 동료 적당히 줄이기</div>
+                <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:4px">보마(공속) 동료 주의사항</div>
+              <div style="font-size:10px;color:var(--t2);line-height:1.8">
+                <div>1. MP 관리 안 되면 보마 적당히 줄이기</div>
+                <div>2. 공속 늘릴수록 MP 소모 증가</div>
+              </div>
               </div>
             </div>
             <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/7.jpeg')">
               <img src="public/boss_match/7.jpeg" alt="공속 DPS 기준" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
               <div style="padding:6px 10px;background:var(--s2);border-top:1px solid var(--border)">
-                <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">공속 DPS 기준</div>
-                <div style="font-size:10px;color:var(--t2);line-height:1.5">공속 60~70% 이내로도 초당 DPS 충분</div>
+                <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:4px">공속 DPS 기준</div>
+              <div style="font-size:10px;color:var(--t2);line-height:1.8">
+                <div>1. 공속 60~70% 이내로도 DPS 충분</div>
+                <div>2. 무리한 공속 스택은 MP 소모만 증가</div>
+              </div>
               </div>
             </div>
           </div>
@@ -1942,8 +1976,14 @@ const INFO_TIPS = {
         <div style="border-radius:9px;overflow:hidden;border:1px solid var(--border2);cursor:pointer" onclick="openBossImg('public/boss_match/8.jpeg')">
           <img src="public/boss_match/8.jpeg" alt="유물 세팅 추천" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
           <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
-            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">유니크 3종 + 레전더리 6종 추천 구성</div>
-            <div style="font-size:11px;color:var(--t2);line-height:1.6">명약(1티어) / 용암(명약 시 디버프 최종뎀 시너지) / 영혼석(MP회복, 어빌 mp회복 미스틱 있으면 75% 이상 유지 가능) / 물병(공속 비례라 공속 낮으면 비추천) — 신규 유물은 추후 공지</div>
+            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">유니크 3종 + 레전더리 6종 추천 구성</div>
+            <div style="font-size:11px;color:var(--t2);line-height:1.9;display:flex;flex-direction:column;gap:1px">
+              <div>1. <span style="color:var(--gold)">명약</span> — 1티어, 길드보스 필수 유물</div>
+              <div>2. <span style="color:var(--gold)">용암</span> — 명약 시 디버프 최종뎀 시너지로 우수</div>
+              <div>3. <span style="color:var(--gold)">영혼석</span> — MP 회복, 어빌 MP회복 미스틱 있으면 MP 75% 이상 유지 가능</div>
+              <div>4. <span style="color:var(--t3)">물병</span> — 공속 비례 유물, 공속 낮으면 비추천</div>
+              <div>5. 신규 유물은 추후 공지 예정</div>
+            </div>
           </div>
         </div>
         <div class="tip-note" style="margin-top:10px">💡 보스 대전 고점 핵심 루틴: <strong>풀스택 예열 → 구슬 즉시 수집 → 그로기 타이밍 시너지 정렬 → 막타 딜 우겨넣기</strong></div>
