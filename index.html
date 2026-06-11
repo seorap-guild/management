@@ -1522,7 +1522,7 @@ function confirmAddRange(){
 //  INFO PAGE (전투 팁 정보)
 // ══════════════════════════════════════════════
 let infoTab = '대항전';
-const INFO_TABS = ['대항전','토벌전','길드보스','수련장'];
+const INFO_TABS = ['대항전','토벌전','길드보스','수련장','상황별 유물'];
 
 const INFO_TIPS = {
   '대항전': `
@@ -1987,6 +1987,39 @@ const INFO_TIPS = {
           </div>
         </div>
         <div class="tip-note" style="margin-top:10px">💡 보스 대전 고점 핵심 루틴: <strong>풀스택 예열 → 구슬 즉시 수집 → 그로기 타이밍 시너지 정렬 → 막타 딜 우겨넣기</strong></div>
+      </div>
+    </div>
+  `,
+  '상황별 유물': `
+    <div class="tip-card">
+      <div class="tip-card-head">
+        <span class="tip-card-title">상황별 유물 추천 가이드</span>
+        <span style="font-size:11px;color:var(--t2);margin-left:auto">이미지 클릭 시 크게 보기</span>
+      </div>
+      <div class="tip-body" style="gap:14px">
+        ${[
+          {file:'챕터',    label:'챕터',      desc:['1. 챕터 클리어 효율 위주 구성','2. 광역기·이동기와 시너지 좋은 유물 우선','3. 스테이지 진행 속도 최적화']},
+          {file:'성장던전', label:'성장 던전', desc:['1. 반복 파밍 효율 극대화 구성','2. 쿨타임 감소·버프 지속 유물 우선','3. 상단·하단·특수 던전별 세팅 참고']},
+          {file:'보스레이드',label:'보스 레이드',desc:['1. 단일 타겟 누적 딜 최대화 구성','2. 보스 공격력·치명타·최종뎀 시너지 유물 우선','3. 페이즈·어밴드 게임 세팅 동일 적용 가능']},
+          {file:'월드보스', label:'월드 보스', desc:['1. 단시간 순간 딜 극대화 구성','2. 공격 속도·폭발 데미지 유물 우선','3. 점수 컷 기준으로 유물 조합 조정']},
+          {file:'길드',     label:'길드 콘텐츠',desc:['1. 길드 보스·토벌전 통합 추천 구성','2. 방어력 감소·피해 증폭 시너지 유물 우선','3. 길드원과 버프 중복 고려하여 세팅']},
+          {file:'아레나',   label:'아레나',    desc:['1. PvP 특화 구성 — 생존+순간 폭딜 균형','2. 받는 피해 감소·무적기 연계 유물 우선','3. 상대 직업군에 따라 유연하게 교체']},
+          {file:'파티퀘스트',label:'파티 퀘스트',desc:['1. 파티원 시너지 고려한 역할 분담 구성','2. 광역 버프·힐 유물로 파티 기여도 극대화','3. 파티 구성에 따라 딜·탱·서포트 유연 전환']},
+        ].map(item=>`
+          <div style="border-radius:10px;overflow:hidden;border:1px solid var(--border2)">
+            <div style="padding:8px 14px;background:var(--s2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px">
+              <span style="font-size:12px;font-weight:700;color:var(--text)">${item.label}</span>
+            </div>
+            <div style="cursor:pointer" onclick="openBossImg('public/antique/${item.file}.jpg')">
+              <img src="public/antique/${item.file}.jpg" alt="${item.label} 유물 추천" style="width:100%;display:block;transition:opacity .15s" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+            </div>
+            <div style="padding:8px 12px;background:var(--s2);border-top:1px solid var(--border)">
+              <div style="font-size:11px;color:var(--t2);line-height:1.9;display:flex;flex-direction:column;gap:1px">
+                ${item.desc.map(d=>`<div>${d}</div>`).join('')}
+              </div>
+            </div>
+          </div>
+        `).join('')}
       </div>
     </div>
   `,
