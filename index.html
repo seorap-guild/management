@@ -776,6 +776,27 @@ function curBattle(){
 function tagCls(type){ return type==='토벌전'?'tag-tobul':type==='대항전'?'tag-daehang':type==='수련장'?'tag-training':'tag-boss'; }
 function btagCls(type){ return type==='토벌전'?'btag-tobul':type==='대항전'?'btag-daehang':type==='수련장'?'btag-training':'btag-boss'; }
 
+function computeMvpCounts(){
+  const counts={};
+  if(!S.battles) return counts;
+  S.battles.forEach(bt=>{
+    if(!bt.bossScores||!Object.keys(bt.bossScores).length) return;
+    const hasStd=S.standards?.[bt.type];
+    const stdAvailable=hasStd&&getStandards(bt.type).some(s=>s.score>0);
+    if(!stdAvailable) return;
+    const snap=bt.powerSnapshot||{};
+    const getPwr=(name)=>{ try{ return snap[name]??(S.members.find(m=>m.name===name)?.power||0); }catch(e){ return 0; } };
+    let maxDiff=0, mvpName=null;
+    S.members.forEach(m=>{
+      const bs=bt.bossScores[m.name]??null; if(bs===null) return;
+      const exp=getExpectedScore(bt.type,getPwr(m.name)); if(exp===null) return;
+      const diff=bs-exp; if(diff>maxDiff){ maxDiff=diff; mvpName=m.name; }
+    });
+    if(mvpName) counts[mvpName]=(counts[mvpName]||0)+1;
+  });
+  return counts;
+}
+
 // ══════════════════════════════════════════════
 //  DASHBOARD
 // ══════════════════════════════════════════════
@@ -823,14 +844,15 @@ function renderDashboard(){
     const zero = rows.filter(r=>r.diff!==null&&r.diff===0).length;
     const maxDiff = rows.length?Math.max(...rows.map(r=>r.diff??-9999)):0;
     const mvp = rows.find(r=>r.diff===maxDiff&&maxDiff>0);
+    const mvpCounts = computeMvpCounts();
 
     body = `
     <div class="summary-row">
       <div class="chip"><div class="chip-label">기준 초과</div><div class="chip-val" style="color:var(--green)">${pos}명</div></div>
       <div class="chip"><div class="chip-label">기준 미달</div><div class="chip-val" style="color:var(--red)">${neg}명</div></div>
       ${mvp?`<div class="chip"><div class="chip-label">MVP</div>
-        <div class="chip-val" style="color:var(--gold);font-size:15px;padding-top:2px">${mvp.name}</div>
-        <div style="font-size:11px;color:var(--t3);margin-top:3px">+${maxDiff}억</div></div>`:''}
+        <div class="chip-val" style="color:var(--gold);font-size:15px;padding-top:2px">${mvp.name} <span style="font-size:12px">${'★'.repeat(mvpCounts[mvp.name]||0)}</span></div>
+        <div style="font-size:11px;color:var(--t3);margin-top:3px">+${maxDiff}억 · 누적 ${mvpCounts[mvp.name]||1}회</div></div>`:''}
     </div>
     <div class="result-panel">
       <div class="rp-head">
@@ -851,7 +873,7 @@ function renderDashboard(){
           return `<div class="row ${rowCls}" style="grid-template-columns:46px 1fr 80px 80px 90px">
             <div class="cell" style="font-size:12px;font-weight:700;color:var(--text);white-space:nowrap">${r.pr}위</div>
             <div class="cell" style="gap:5px;flex-wrap:wrap">
-              <span style="font-size:13px;font-weight:500">${r.name}</span>
+              <span style="font-size:13px;font-weight:500">${r.name}</span>${mvpCounts[r.name]?`<span style="color:var(--gold);font-size:11px;letter-spacing:1px;margin-left:3px" title="MVP ${mvpCounts[r.name]}회">${'★'.repeat(mvpCounts[r.name])}</span>`:''}
               ${jobBadge(S.members.find(m=>m.name===r.name)?.job||'')}
               <span style="font-size:11px;font-weight:600;color:var(--text)">${fmtPower(r.power)}</span>
             </div>
