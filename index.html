@@ -478,25 +478,25 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
           style="width:90px" oninput="syncSlider('min',this.value)">
         <span style="font-size:12px;color:var(--t2)">조</span>
       </div>
-      <input type="range" class="range-slider" id="rm-min" min="0" max="9999" step="1" value="0"
+      <input type="range" class="range-slider" id="rm-min" min="0" max="99999" step="100" value="0"
         oninput="syncEdit('min',this.value)">
     </div>
     <div class="range-divider">~</div>
     <div class="range-group">
-      <div class="range-group-label">최대 투력 (조) — 9999 입력 시 ∞</div>
+      <div class="range-group-label">최대 투력 (조) — 99999 입력 시 ∞</div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-        <input type="text" inputmode="decimal" class="std-input" id="rm-max-edit" value="100" placeholder="9999=∞"
+        <input type="text" inputmode="decimal" class="std-input" id="rm-max-edit" value="100" placeholder="99999=∞"
           style="width:90px" oninput="syncSlider('max',this.value)">
         <span style="font-size:12px;color:var(--t2)">조</span>
       </div>
-      <input type="range" class="range-slider" id="rm-max" min="0" max="9999" step="1" value="100"
+      <input type="range" class="range-slider" id="rm-max" min="0" max="99999" step="100" value="100"
         oninput="syncEdit('max',this.value)">
     </div>
     <div class="range-group">
       <div class="range-group-label">기준 점수</div>
       <div class="range-score-row">
         <input type="text" inputmode="decimal" class="std-input" id="rm-score" placeholder="0" style="width:100px">
-        <span style="font-size:13px;color:var(--t2)">억</span>
+        <span id="rm-score-unit" style="font-size:13px;color:var(--t2)">억</span>
       </div>
     </div>
     <div style="display:flex;gap:8px;margin-top:20px">
@@ -852,7 +852,7 @@ function renderDashboard(){
       <div class="chip"><div class="chip-label">기준 미달</div><div class="chip-val" style="color:var(--red)">${neg}명</div></div>
       ${mvp?`<div class="chip"><div class="chip-label">MVP</div>
         <div class="chip-val" style="color:var(--gold);font-size:15px;padding-top:2px">${mvp.name} <span style="font-size:12px">${'★'.repeat(mvpCounts[mvp.name]||0)}</span></div>
-        <div style="font-size:11px;color:var(--t3);margin-top:3px">+${maxDiff}억 · 누적 ${mvpCounts[mvp.name]||1}회</div></div>`:''}
+        <div style="font-size:11px;color:var(--t3);margin-top:3px">+${maxDiff}${bt.type==='수련장'?'만':'억'} · 누적 ${mvpCounts[mvp.name]||1}회</div></div>`:''}
     </div>
     <div class="result-panel">
       <div class="rp-head">
@@ -860,6 +860,7 @@ function renderDashboard(){
         <div style="font-size:12px;color:var(--t3)">${rows.length}명</div>
       </div>
       ${(()=>{
+        const scoreUnit = bt.type==='수련장'?'만':'억';
         const colHead = `<div class="row-head" style="grid-template-columns:46px 1fr 80px 80px 90px">
           <div>투력순위</div><div>닉네임</div>
           <div style="text-align:right">기준치</div>
@@ -868,7 +869,7 @@ function renderDashboard(){
         </div>`;
         const makeRow = r => {
           const rowCls = r.diff===null?'rzero':r.diff>0?'rpos':r.diff<0?'rneg':'rzero';
-          const diffStr = r.diff===null?'—':r.diff>0?'+'+r.diff+'억':r.diff+'억';
+          const diffStr = r.diff===null?'—':r.diff>0?'+'+r.diff+scoreUnit:r.diff+scoreUnit;
           const diffCol = r.diff===null?'var(--t3)':r.diff>0?'var(--green)':r.diff<0?'var(--red)':'var(--t3)';
           return `<div class="row ${rowCls}" style="grid-template-columns:46px 1fr 80px 80px 90px">
             <div class="cell" style="font-size:12px;font-weight:700;color:var(--text);white-space:nowrap">${r.pr}위</div>
@@ -877,8 +878,8 @@ function renderDashboard(){
               ${jobBadge(S.members.find(m=>m.name===r.name)?.job||'')}
               <span style="font-size:11px;font-weight:600;color:var(--text)">${fmtPower(r.power)}</span>
             </div>
-            <div class="cell" style="justify-content:flex-end;font-size:12px;color:var(--t3)">${r.expected!==null?r.expected+'억':'—'}</div>
-            <div class="cell" style="justify-content:flex-end;font-size:12px;font-weight:500;color:var(--text)">${r.bossScore!==null?r.bossScore+'억':'—'}</div>
+            <div class="cell" style="justify-content:flex-end;font-size:12px;color:var(--t3)">${r.expected!==null?r.expected+scoreUnit:'—'}</div>
+            <div class="cell" style="justify-content:flex-end;font-size:12px;font-weight:500;color:var(--text)">${r.bossScore!==null?r.bossScore+scoreUnit:'—'}</div>
             <div class="cell cscore" style="justify-content:flex-end">
               <span style="font-size:14px;font-weight:700;color:${diffCol}">${diffStr}</span>
             </div>
@@ -979,7 +980,7 @@ function renderEntryPage(){
             value="${bsVal}" placeholder="0"
             style="color:#fff"
             onkeydown="if(event.key==='Enter')saveEntryScore('${bt.id}','${m.name}',this.value)">
-          <span style="font-size:10px;color:var(--t2);flex-shrink:0">억</span>
+          <span style="font-size:10px;color:var(--t2);flex-shrink:0">${bt.type==='수련장'?'만':'억'}</span>
         </div>
       </div>`;
     };
@@ -1226,8 +1227,13 @@ function fmtPower(p){
   if(p===null||p===undefined||p===''||p===0)return '-';
   const n=parseFloat(p);
   if(isNaN(n))return '-';
-  // 소수점 1자리까지만, 불필요한 .0 제거
-  return (Math.round(n*10)/10).toLocaleString('ko-KR', {maximumFractionDigits:1})+'조';
+  if(n>=10000){
+    const gyeong=Math.floor(n/10000);
+    const jo=Math.round((n%10000)*10)/10;
+    if(jo===0) return gyeong+'경';
+    return gyeong+'경 '+jo.toLocaleString('ko-KR',{maximumFractionDigits:1})+'조';
+  }
+  return (Math.round(n*10)/10).toLocaleString('ko-KR',{maximumFractionDigits:1})+'조';
 }
 function renderMembersPage(){
   if(!S.members) S.members=[];
@@ -1430,17 +1436,17 @@ function renderStandardPage(){
     const rows = stds.map((s,i)=>{
       const typeIdx = BATTLE_TYPES.indexOf(type);
       const inputId = 'std-t'+typeIdx+'-i'+i;
-      const labelStr = s.label || (s.minPower+'조~'+(s.maxPower>=999999?'∞':s.maxPower+'조'));
+      const labelStr = s.label || (fmtPower(s.minPower)+'~'+(s.maxPower>=999999?'∞':fmtPower(s.maxPower)));
       return `<div class="std-row">
         <button class="btn-minus" onclick="deleteStd('${type}',${i})" title="삭제">−</button>
         <div style="font-size:13px;font-weight:500">${labelStr}</div>
         <div style="font-size:11px;color:var(--t3)">
-          ${s.minPower}조 ~ ${s.maxPower>=999999?'∞':s.maxPower+'조'}
+          ${fmtPower(s.minPower)} ~ ${s.maxPower>=999999?'∞':fmtPower(s.maxPower)}
         </div>
         <div style="display:flex;align-items:center;gap:4px">
           <input type="text" inputmode="decimal" class="std-input" id="${inputId}"
             value="${s.score||''}" placeholder="0">
-          <span style="font-size:11px;color:var(--t2)">억</span>
+          <span style="font-size:11px;color:var(--t2)">${type==='수련장'?'만':'억'}</span>
         </div>
         <div></div>
       </div>`;
@@ -1493,7 +1499,7 @@ function saveAllStd(type){
 function deleteStd(type, idx){
   const stds = getStandards(type);
   const s = stds[idx];
-  const label = s.label || (s.minPower+'조~'+(s.maxPower>=999999?'∞':s.maxPower+'조'));
+  const label = s.label || (fmtPower(s.minPower)+'~'+(s.maxPower>=999999?'∞':fmtPower(s.maxPower)));
   showConfirm('['+type+'] '+label+' 기준치를 삭제할까요?', function(){
     stds.splice(idx,1);
     save(); renderStandardPage();
@@ -1509,18 +1515,19 @@ function openRangeModal(type){
   document.getElementById('rm-max').value = 100;
   document.getElementById('rm-max-edit').value = '100';
   document.getElementById('rm-score').value = '';
+  document.getElementById('rm-score-unit').textContent = type==='수련장'?'만':'억';
   document.getElementById('range-modal-bg').classList.add('open');
   setTimeout(()=>document.getElementById('rm-min-edit').focus(), 50);
 }
 function syncEdit(id, val){
   // 슬라이더 → 에디트박스
   const num = parseFloat(val)||0;
-  document.getElementById('rm-'+id+'-edit').value = num >= 9999 ? '9999' : num;
+  document.getElementById('rm-'+id+'-edit').value = num >= 99999 ? '99999' : num;
 }
 function syncSlider(id, val){
   // 에디트박스 → 슬라이더
   const num = parseFloat(val);
-  if(!isNaN(num)) document.getElementById('rm-'+id).value = Math.min(num, 9999);
+  if(!isNaN(num)) document.getElementById('rm-'+id).value = Math.min(num, 99999);
 }
 function closeRangeModal(){
   document.getElementById('range-modal-bg').classList.remove('open');
@@ -1528,11 +1535,11 @@ function closeRangeModal(){
 function confirmAddRange(){
   const minV = parseFloat(document.getElementById('rm-min-edit').value)||0;
   const maxRaw = parseFloat(document.getElementById('rm-max-edit').value)||0;
-  const maxV = maxRaw >= 9999 ? 999999 : maxRaw;
+  const maxV = maxRaw >= 99999 ? 999999 : maxRaw;
   const score = parseFloat(document.getElementById('rm-score').value)||0;
   if(minV >= maxV && maxV !== 999999){ showToast('최소값이 최대값보다 클 수 없어요'); return; }
   const stds = getStandards(_rangeType);
-  const label = minV+'조~'+(maxV>=999999?'∞':maxV+'조');
+  const label = fmtPower(minV)+'~'+(maxV>=999999?'∞':fmtPower(maxV));
   stds.push({label, minPower:minV, maxPower:maxV, score});
   // minPower 기준 내림차순 정렬
   stds.sort((a,b)=>b.minPower-a.minPower);
