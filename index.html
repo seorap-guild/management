@@ -848,6 +848,7 @@ function renderDashboard(){
 
     body = `
     <div class="summary-row">
+      <div class="chip"><div class="chip-label">길드 전체 순위</div><div class="chip-val" style="color:var(--blue)">${bt.guildRank?bt.guildRank+'위':'-'}</div></div>
       <div class="chip"><div class="chip-label">기준 초과</div><div class="chip-val" style="color:var(--green)">${pos}명</div></div>
       <div class="chip"><div class="chip-label">기준 미달</div><div class="chip-val" style="color:var(--red)">${neg}명</div></div>
       ${mvp?`<div class="chip"><div class="chip-label">MVP</div>
@@ -1003,6 +1004,12 @@ function renderEntryPage(){
         </div>
         <button class="btn btn-sm btn-danger" onclick="deleteBattle(event,'${bt.id}','${bt.date}','${bt.type}')">삭제</button>
       </div>
+      <div style="padding:10px 18px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px">
+        <span style="font-size:12px;color:var(--t2)">길드 전체 순위</span>
+        <input type="text" inputmode="numeric" class="sinput" style="width:64px;text-align:right;padding:6px 8px" id="${bt.id}-guildrank" value="${bt.guildRank??''}" placeholder="-"
+          onkeydown="if(event.key==='Enter')saveGuildRank('${bt.id}',this.value)">
+        <span style="font-size:12px;color:var(--t2)">위</span>
+      </div>
       <div class="slots" style="padding:0">
         <div class="two-col-grid">
           <div style="border-right:1px solid var(--border)">${colHead}${left}</div>
@@ -1033,6 +1040,13 @@ function saveAllEntryScores(bid){
   const now = new Date();
   const today = (now.getMonth()+1).toString().padStart(2,'0')+'/'+(now.getDate()).toString().padStart(2,'0');
   if(!bt.powerSnapshot) bt.powerSnapshot={};
+
+  const grEl = document.getElementById(bid+'-guildrank');
+  if(grEl){
+    const gr = parseInt(grEl.value);
+    if(!isNaN(gr) && gr > 0) bt.guildRank = gr;
+    else if(grEl.value.trim()==='') delete bt.guildRank;
+  }
 
   sortedM.forEach((m, i)=>{
     // 보스 점수 저장
@@ -1065,6 +1079,14 @@ function saveAllEntryScores(bid){
   bt.result = newResult;
   save(); renderEntryPage();
   showToast('저장 완료!');
+}
+function saveGuildRank(bid, val){
+  const bt = S.battles.find(b=>b.id===bid); if(!bt) return;
+  const num = parseInt(val);
+  if(!isNaN(num) && num > 0) bt.guildRank = num;
+  else delete bt.guildRank;
+  save(); renderEntryPage();
+  showToast('전체 순위 저장!');
 }
 function saveEntryScore(bid, name, val){
   const bt = S.battles.find(b=>b.id===bid); if(!bt) return;
