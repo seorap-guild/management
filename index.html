@@ -851,7 +851,7 @@ function renderDashboard(){
       <div class="chip"><div class="chip-label">기준 초과</div><div class="chip-val" style="color:var(--green)">${pos}명</div></div>
       <div class="chip"><div class="chip-label">기준 미달</div><div class="chip-val" style="color:var(--red)">${neg}명</div></div>
       ${mvp?`<div class="chip"><div class="chip-label">MVP</div>
-        <div class="chip-val" style="color:var(--gold);font-size:15px;padding-top:2px">${mvp.name} <span style="font-size:12px">${'★'.repeat(mvpCounts[mvp.name]||0)}</span></div>
+        <div class="chip-val" style="color:var(--gold);font-size:15px;padding-top:2px">${mvp.name} <span style="font-size:12px">★×${mvpCounts[mvp.name]||0}</span></div>
         <div style="font-size:11px;color:var(--t3);margin-top:3px">+${maxDiff}${bt.type==='수련장'?'만':'억'} · 누적 ${mvpCounts[mvp.name]||1}회</div></div>`:''}
     </div>
     <div class="result-panel">
@@ -874,7 +874,7 @@ function renderDashboard(){
           return `<div class="row ${rowCls}" style="grid-template-columns:46px 1fr 80px 80px 90px">
             <div class="cell" style="font-size:12px;font-weight:700;color:var(--text);white-space:nowrap">${r.pr}위</div>
             <div class="cell" style="gap:5px;flex-wrap:wrap">
-              <span style="font-size:13px;font-weight:500">${r.name}</span>${mvpCounts[r.name]?`<span style="color:var(--gold);font-size:11px;letter-spacing:1px;margin-left:3px" title="MVP ${mvpCounts[r.name]}회">${'★'.repeat(mvpCounts[r.name])}</span>`:''}
+              <span style="font-size:13px;font-weight:500">${r.name}</span>${mvpCounts[r.name]?`<span style="color:var(--gold);font-size:11px;letter-spacing:1px;margin-left:3px" title="MVP ${mvpCounts[r.name]}회">★×${mvpCounts[r.name]}</span>`:''}
               ${jobBadge(S.members.find(m=>m.name===r.name)?.job||'')}
               <span style="font-size:11px;font-weight:600;color:var(--text)">${fmtPower(r.power)}</span>
             </div>
