@@ -625,7 +625,7 @@ let S = {
 };
 
 // 세션별로 관리되는 UI 상태 (Firebase에 저장/공유하지 않음)
-let localState = { currentId: null };
+let localState = { currentId: null, dashSort: { key: 'pr', dir: 'asc' } };
 
 function seed() {
   S.members = [
@@ -848,7 +848,7 @@ function renderDashboard(){
 
     body = `
     <div class="summary-row">
-      <div class="chip"><div class="chip-label">길드 전체 순위</div><div class="chip-val" style="color:var(--blue)">${bt.guildRank?bt.guildRank+'위':'-'}</div></div>
+      <div class="chip"><div class="chip-label">🏅 길드 전체 순위</div><div class="chip-val" style="color:var(--blue)">${bt.guildRank?bt.guildRank+'위':'-'}</div></div>
       <div class="chip"><div class="chip-label">기준 초과</div><div class="chip-val" style="color:var(--green)">${pos}명</div></div>
       <div class="chip"><div class="chip-label">기준 미달</div><div class="chip-val" style="color:var(--red)">${neg}명</div></div>
       ${mvp?`<div class="chip"><div class="chip-label">MVP</div>
@@ -862,11 +862,13 @@ function renderDashboard(){
       </div>
       ${(()=>{
         const scoreUnit = bt.type==='수련장'?'만':'억';
+        const sortArrow = key => localState.dashSort.key===key ? (localState.dashSort.dir==='asc'?' ▲':' ▼') : '';
+        const sortHeadStyle = 'cursor:pointer;user-select:none';
         const colHead = `<div class="row-head" style="grid-template-columns:46px 1fr 80px 80px 90px">
-          <div>투력순위</div><div>닉네임</div>
+          <div style="${sortHeadStyle}" onclick="sortDash('pr')">투력순위${sortArrow('pr')}</div><div>닉네임</div>
           <div style="text-align:right">기준치</div>
-          <div style="text-align:right">실제점수</div>
-          <div style="text-align:right">차이</div>
+          <div style="text-align:right;${sortHeadStyle}" onclick="sortDash('bossScore')">실제점수${sortArrow('bossScore')}</div>
+          <div style="text-align:right;${sortHeadStyle}" onclick="sortDash('diff')">차이${sortArrow('diff')}</div>
         </div>`;
         const makeRow = r => {
           const rowCls = r.diff===null?'rzero':r.diff>0?'rpos':r.diff<0?'rneg':'rzero';
@@ -886,12 +888,20 @@ function renderDashboard(){
             </div>
           </div>`;
         };
-        // 투력순위 기준 전체 정렬 후 1~15 / 16~30 분리
-        const allRows = sortedM.map(m=>{
+        // 선택된 정렬 기준(투력순위/실제점수/차이)으로 전체 정렬 후 1~15 / 16~30 분리
+        let allRows = sortedM.map(m=>{
           const bossScore = bt.bossScores?.[m.name] ?? null;
           const expected = stdAvailable ? getExpectedScore(bt.type, m.power) : null;
           const diff = (bossScore!==null && expected!==null) ? bossScore - expected : null;
           return {name:m.name, pr:m.pr, power:m.power, bossScore, expected, diff};
+        });
+        const {key:sortKey, dir:sortDir} = localState.dashSort;
+        allRows = allRows.slice().sort((a,b)=>{
+          const av=a[sortKey], bv=b[sortKey];
+          if(av===null&&bv===null) return 0;
+          if(av===null) return 1;
+          if(bv===null) return -1;
+          return sortDir==='asc' ? av-bv : bv-av;
         });
         const left  = allRows.slice(0,15).map(makeRow).join('');
         const right = allRows.slice(15,30).map(makeRow).join('');
@@ -919,6 +929,12 @@ function renderDashboard(){
 }
 
 function selBattle(id){ if(!id||id==='') return; localState.currentId=id; renderDashboard(); }
+function sortDash(key){
+  const s = localState.dashSort;
+  if(s.key===key) s.dir = s.dir==='asc'?'desc':'asc';
+  else { s.key = key; s.dir = 'asc'; }
+  renderDashboard();
+}
 function dashTypeChange(type){
   const latest = [...S.battles].reverse().find(b=>(b.type||'길드보스')===type);
   localState.currentId = latest?.id || null;
@@ -1005,7 +1021,7 @@ function renderEntryPage(){
         <button class="btn btn-sm btn-danger" onclick="deleteBattle(event,'${bt.id}','${bt.date}','${bt.type}')">삭제</button>
       </div>
       <div style="padding:10px 18px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px">
-        <span style="font-size:12px;color:var(--t2)">길드 전체 순위</span>
+        <span style="font-size:12px;color:var(--t2)">🏅 길드 전체 순위</span>
         <input type="text" inputmode="numeric" class="sinput" style="width:64px;text-align:right;padding:6px 8px" id="${bt.id}-guildrank" value="${bt.guildRank??''}" placeholder="-"
           onkeydown="if(event.key==='Enter')saveGuildRank('${bt.id}',this.value)">
         <span style="font-size:12px;color:var(--t2)">위</span>
