@@ -309,24 +309,29 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .sch-wd.sun{color:#e0788a}
 .sch-wd.sat{color:#7ba3f0}
 .sch-grid{display:grid;grid-template-columns:repeat(7,1fr)}
-.sch-cell{aspect-ratio:1;min-height:52px;padding:6px 0 0;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;display:flex;flex-direction:column;align-items:center;gap:5px}
+.sch-cell{min-height:78px;padding:5px 0 4px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;display:flex;flex-direction:column;gap:3px}
 .sch-cell:nth-child(7n){border-right:none}
 .sch-cell:hover{background:rgba(255,255,255,0.02)}
-.sch-cell.other-month{opacity:.3}
-.sch-cell.selected{background:rgba(91,138,245,.1)}
-.sch-cell.selected .sch-date-num{border:1px solid var(--blue)}
-.sch-date-num{font-size:12.5px;color:var(--t2);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sch-cell.other-month{opacity:.32}
+.sch-cell.selected{background:rgba(91,138,245,.08)}
+.sch-date-num{font-size:11.5px;color:var(--t2);width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-left:5px;flex-shrink:0}
 .sch-cell.today .sch-date-num{color:#fff;background:var(--blue)}
-.sch-cell.today.selected .sch-date-num{border:none}
-.sch-dots{display:flex;justify-content:center;flex-wrap:wrap;gap:3px;padding:0 4px;max-width:100%}
-.sch-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-.sch-c-coupon{background:var(--gold)}
-.sch-c-hero{background:var(--purple)}
-.sch-c-buff{background:var(--red)}
-.sch-c-attendance{background:var(--teal)}
-.sch-c-dropup{background:var(--green)}
-.sch-c-event{background:var(--blue)}
-.sch-c-pvp{background:var(--orange)}
+.sch-cell.selected .sch-date-num{box-shadow:inset 0 0 0 1px var(--blue)}
+.sch-cell.today.selected .sch-date-num{box-shadow:none}
+.sch-bars{display:flex;flex-direction:column;gap:2px}
+.sch-bar{height:15px;line-height:15px;font-size:9.5px;font-weight:600;padding:0 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sch-bar.rs{margin-left:3px;border-top-left-radius:4px;border-bottom-left-radius:4px}
+.sch-bar.re{margin-right:3px;border-top-right-radius:4px;border-bottom-right-radius:4px}
+.sch-bar.cutoff::after{content:'›';float:right}
+.sch-more{font-size:9.5px;color:var(--t3);padding-left:8px;cursor:pointer}
+.sch-more:hover{color:var(--text)}
+.sch-c-coupon{background:var(--gold);color:#1c1f2b}
+.sch-c-hero{background:var(--purple);color:#fff}
+.sch-c-buff{background:var(--red);color:#fff}
+.sch-c-attendance{background:var(--teal);color:#0d2321}
+.sch-c-dropup{background:var(--green);color:#06231a}
+.sch-c-event{background:var(--blue);color:#fff}
+.sch-c-pvp{background:var(--orange);color:#2b1400}
 .sch-selected-panel{background:var(--s1);border:1px solid var(--border);border-radius:13px;padding:16px 18px;margin-bottom:20px}
 .sch-selected-title{font-size:13.5px;font-weight:600;margin-bottom:12px;color:var(--text)}
 .sch-selected-empty{font-size:13px;color:var(--t3);padding:8px 0}
@@ -341,8 +346,10 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .sch-event-date{font-size:11.5px;color:var(--t3);margin-top:2px}
 .sch-event-desc{font-size:12.5px;color:var(--t2);margin-top:5px;line-height:1.6}
 @media(max-width:640px){
-  .sch-cell{min-height:42px;padding:4px 0 0;gap:3px}
-  .sch-date-num{font-size:11px;width:19px;height:19px}
+  .sch-cell{min-height:60px;padding:3px 0 2px;gap:2px}
+  .sch-date-num{font-size:10.5px;width:16px;height:16px;margin-left:3px}
+  .sch-bar{height:12px;line-height:12px;font-size:8px;padding:0 3px}
+  .sch-more{font-size:8px}
   .sch-title{font-size:15px;min-width:88px}
 }
 
@@ -2218,16 +2225,25 @@ function renderSchedulePage(){
     else if(i >= firstDayOfWeek+daysInMonth){ cd = i - firstDayOfWeek - daysInMonth + 1; cm=m+1; if(cm>11){cm=0;cy++;} otherMonth=true; }
     else { cd = i - firstDayOfWeek + 1; }
     const dateStr = _schDateStr(cy,cm,cd);
+    const dow = i%7;
     const isToday = dateStr === _schToday();
     const isSelected = dateStr === scheduleState.selected;
     const dayEvents = _schEventsOn(dateStr);
-    const dotsHtml = dayEvents.map(e=>{
+    const maxShow = 2;
+    const barsHtml = dayEvents.slice(0,maxShow).map(e=>{
       const meta = SCH_TYPE_META[e.type];
-      return `<span class="sch-dot ${meta.cls}" title="${e.title}"></span>`;
+      const isStart = e.start===dateStr, isTrueEnd = e.end===dateStr;
+      const rs = isStart || dow===0;
+      const re = isTrueEnd || dow===6 || (i===totalCells-1);
+      const cutoff = e.end===null && dow===6 && !otherMonth;
+      const label = rs ? e.icon+' '+e.title : '';
+      return `<div class="sch-bar ${meta.cls}${rs?' rs':''}${re?' re':''}${cutoff?' cutoff':''}" title="${e.title}">${label}</div>`;
     }).join('');
+    const moreCount = dayEvents.length - maxShow;
+    const moreHtml = moreCount>0 ? `<div class="sch-more">+${moreCount}개</div>` : '';
     cellsHtml += `<div class="sch-cell${otherMonth?' other-month':''}${isToday?' today':''}${isSelected?' selected':''}" onclick="schSelectDay('${dateStr}')">
       <div class="sch-date-num">${cd}</div>
-      <div class="sch-dots">${dotsHtml}</div>
+      <div class="sch-bars">${barsHtml}${moreHtml}</div>
     </div>`;
   }
 
