@@ -293,65 +293,11 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .two-col-grid{display:grid;grid-template-columns:1fr 1fr}
 
 /* 스케줄 */
-.sch-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px}
-.sch-nav{display:flex;align-items:center;gap:10px}
-.sch-nav-btn{background:var(--s1);border:1px solid var(--border2);color:var(--t2);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.sch-nav-btn:hover{border-color:var(--blue);color:var(--text)}
-.sch-title{font-size:17px;font-weight:700;font-family:"Space Grotesk",sans-serif;min-width:108px;text-align:center}
-.sch-today-btn{background:var(--s1);border:1px solid var(--border2);color:var(--t2);padding:0 12px;height:30px;border-radius:8px;cursor:pointer;font-size:12px;font-family:'Noto Sans KR',sans-serif;transition:all .15s}
-.sch-today-btn:hover{border-color:var(--blue);color:var(--text)}
-.sch-legend{display:flex;flex-wrap:wrap;gap:12px}
-.sch-legend-item{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--t2)}
-.sch-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.sch-grid-wrap{background:var(--s1);border:1px solid var(--border);border-radius:13px;overflow:hidden;margin-bottom:20px}
-.sch-weekdays{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--border)}
-.sch-wd{text-align:center;font-size:11.5px;color:var(--t3);padding:9px 0;font-weight:500}
-.sch-wd.sun{color:#e0788a}
-.sch-wd.sat{color:#7ba3f0}
-.sch-grid{display:grid;grid-template-columns:repeat(7,1fr)}
-.sch-cell{min-height:78px;padding:5px 0 4px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;display:flex;flex-direction:column;gap:3px}
-.sch-cell:nth-child(7n){border-right:none}
-.sch-cell:hover{background:rgba(255,255,255,0.02)}
-.sch-cell.other-month{opacity:.32}
-.sch-cell.selected{background:rgba(91,138,245,.08)}
-.sch-date-num{font-size:11.5px;color:var(--t2);width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-left:5px;flex-shrink:0}
-.sch-cell.today .sch-date-num{color:#fff;background:var(--blue)}
-.sch-cell.selected .sch-date-num{box-shadow:inset 0 0 0 1px var(--blue)}
-.sch-cell.today.selected .sch-date-num{box-shadow:none}
-.sch-bars{display:flex;flex-direction:column;gap:2px}
-.sch-bar{height:15px;line-height:15px;font-size:9.5px;font-weight:600;padding:0 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sch-bar.rs{margin-left:3px;border-top-left-radius:4px;border-bottom-left-radius:4px}
-.sch-bar.re{margin-right:3px;border-top-right-radius:4px;border-bottom-right-radius:4px}
-.sch-bar.cutoff::after{content:'›';float:right}
-.sch-more{font-size:9.5px;color:var(--t3);padding-left:8px;cursor:pointer}
-.sch-more:hover{color:var(--text)}
-.sch-c-coupon{background:var(--gold);color:#1c1f2b}
-.sch-c-hero{background:var(--purple);color:#fff}
-.sch-c-buff{background:var(--red);color:#fff}
-.sch-c-attendance{background:var(--teal);color:#0d2321}
-.sch-c-dropup{background:var(--green);color:#06231a}
-.sch-c-event{background:var(--blue);color:#fff}
-.sch-c-pvp{background:var(--orange);color:#2b1400}
-.sch-selected-panel{background:var(--s1);border:1px solid var(--border);border-radius:13px;padding:16px 18px;margin-bottom:20px}
-.sch-selected-title{font-size:13.5px;font-weight:600;margin-bottom:12px;color:var(--text)}
-.sch-selected-empty{font-size:13px;color:var(--t3);padding:8px 0}
-.sch-selected-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--border)}
-.sch-selected-item:first-child{border-top:none}
-.sch-selected-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:4px}
-.sch-selected-body-title{font-size:13.5px;font-weight:500;color:var(--text)}
-.sch-selected-body-desc{font-size:12px;color:var(--t2);margin-top:2px;line-height:1.6}
 .sch-event-card{background:var(--s1);border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:10px;padding:13px 16px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start}
 .sch-event-icon{font-size:19px;line-height:1;margin-top:1px}
 .sch-event-title{font-size:14px;font-weight:600;color:var(--text)}
 .sch-event-date{font-size:11.5px;color:var(--t3);margin-top:2px}
 .sch-event-desc{font-size:12.5px;color:var(--t2);margin-top:5px;line-height:1.6}
-@media(max-width:640px){
-  .sch-cell{min-height:60px;padding:3px 0 2px;gap:2px}
-  .sch-date-num{font-size:10.5px;width:16px;height:16px;margin-left:3px}
-  .sch-bar{height:12px;line-height:12px;font-size:8px;padding:0 3px}
-  .sch-more{font-size:8px}
-  .sch-title{font-size:15px;min-width:88px}
-}
 
 @media(max-width:640px){
   .page{padding:12px}
@@ -2159,14 +2105,9 @@ const INFO_TIPS = {
 // ══════════════════════════════════════════════
 //  SCHEDULE
 // ══════════════════════════════════════════════
-const SCH_TYPE_META = {
-  coupon:     {label:'쿠폰',       cls:'sch-c-coupon'},
-  hero:       {label:'신규 콘텐츠', cls:'sch-c-hero'},
-  buff:       {label:'버프',       cls:'sch-c-buff'},
-  attendance: {label:'출석체크',   cls:'sch-c-attendance'},
-  dropup:     {label:'드랍업',     cls:'sch-c-dropup'},
-  event:      {label:'이벤트',     cls:'sch-c-event'},
-  pvp:        {label:'PvP/콘텐츠', cls:'sch-c-pvp'},
+const SCH_TYPE_COLOR = {
+  coupon:'--gold', hero:'--purple', buff:'--red', attendance:'--teal',
+  dropup:'--green', event:'--blue', pvp:'--orange',
 };
 const SCHEDULE_EVENTS = [
   {id:1,  type:'coupon',     icon:'🎟️', title:'쿠폰 gift300 (동료 300뽑기권 지급)', start:'2026-07-23', end:'2026-09-02', desc:'쿠폰 번호 gift300 입력 시 동료 300뽑기권을 지급합니다. 9월 2일까지 사용 가능합니다.'},
@@ -2178,97 +2119,22 @@ const SCHEDULE_EVENTS = [
   {id:7,  type:'event',      icon:'🗿', title:'여명의 발자취 증표 이벤트',             start:'2026-07-27', end:null,          desc:'7월 27일부터 진행됩니다.'},
   {id:8,  type:'pvp',        icon:'⚔️', title:'콜로세움 오픈',                         start:'2026-07-28', end:null,          desc:'7월 28일부터 콜로세움이 시작됩니다.'},
   {id:9,  type:'dropup',     icon:'📈', title:'자쿰/혼테일 드랍업',                    start:'2026-08-03', end:null,          desc:'8월 3일부터 자쿰/혼테일 드랍률이 증가합니다.'},
-  {id:10, type:'hero',       icon:'🌱', title:'신규 캐릭터 성장 이벤트 1',             start:'2026-07-23', end:'2026-09-23', desc:'9월 23일까지 진행됩니다. (시작일은 추정치이니 정확한 날짜 확인 부탁드려요)'},
-  {id:11, type:'hero',       icon:'🌱', title:'신규 캐릭터 성장 이벤트 2',             start:'2026-07-23', end:'2026-09-23', desc:'9월 23일까지 진행됩니다. (시작일은 추정치이니 정확한 날짜 확인 부탁드려요)'},
-  {id:12, type:'event',      icon:'🍬', title:'달콤한 큐브 축제',                      start:'2026-07-23', end:'2026-09-02', desc:'9월 2일까지 진행됩니다. (시작일은 추정치이니 정확한 날짜 확인 부탁드려요)'},
+  {id:10, type:'hero',       icon:'🌱', title:'신규 캐릭터 성장 이벤트 1',             start:'2026-07-23', end:'2026-09-23', desc:'7월 23일부터 9월 23일까지 진행됩니다.'},
+  {id:11, type:'hero',       icon:'🌱', title:'신규 캐릭터 성장 이벤트 2',             start:'2026-07-23', end:'2026-09-23', desc:'7월 23일부터 9월 23일까지 진행됩니다.'},
+  {id:12, type:'event',      icon:'🍬', title:'달콤한 큐브 축제',                      start:'2026-07-23', end:'2026-09-02', desc:'7월 23일부터 9월 2일까지 진행됩니다.'},
   {id:13, type:'attendance', icon:'📅', title:'시그너스 15일 출석 이벤트',             start:'2026-07-23', end:'2026-08-12', desc:'8월 12일까지 진행되는 시그너스 15일 출석 이벤트입니다.'},
   {id:14, type:'event',      icon:'🛡️', title:'기사단의 펜던트 강화 이벤트',           start:'2026-07-23', end:'2026-09-02', desc:'9월 2일까지 진행됩니다.'},
   {id:15, type:'event',      icon:'🏪', title:'시그너스 상점',                         start:'2026-07-23', end:'2026-09-04', desc:'9월 4일까지 운영되는 시그너스 상점입니다.'},
 ];
-function _schToday(){ const t=new Date(); return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0'); }
-const _schTodayReal = new Date();
-let scheduleState = {year:_schTodayReal.getFullYear(), month:_schTodayReal.getMonth(), selected:_schToday()};
-function _schDateStr(y,m,d){ return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'); }
-function _schEventsOn(dateStr){
-  return SCHEDULE_EVENTS.filter(e=>e.start<=dateStr && (e.end===null || e.end>=dateStr));
-}
-function schChangeMonth(delta){
-  let m = scheduleState.month + delta, y = scheduleState.year;
-  if(m<0){ m=11; y--; } else if(m>11){ m=0; y++; }
-  scheduleState.year=y; scheduleState.month=m;
-  renderSchedulePage();
-}
-function schGoToday(){
-  scheduleState = {year:_schTodayReal.getFullYear(), month:_schTodayReal.getMonth(), selected:_schToday()};
-  renderSchedulePage();
-}
-function schSelectDay(dateStr){
-  scheduleState.selected = dateStr;
-  renderSchedulePage();
+function _schFmtDate(dateStr){
+  const [yy,mm,dd] = dateStr.split('-');
+  return parseInt(mm)+'월 '+parseInt(dd)+'일';
 }
 function renderSchedulePage(){
-  const {year:y, month:m} = scheduleState;
-  const months=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
-  const firstDayOfWeek = new Date(y,m,1).getDay();
-  const daysInMonth = new Date(y,m+1,0).getDate();
-  const prevDaysInMonth = new Date(y,m,0).getDate();
-  const totalCells = Math.ceil((firstDayOfWeek+daysInMonth)/7)*7;
-
-  const legendHtml = Object.entries(SCH_TYPE_META).map(([k,v])=>`
-    <div class="sch-legend-item"><span class="sch-legend-dot ${v.cls}"></span>${v.label}</div>
-  `).join('');
-
-  let cellsHtml = '';
-  for(let i=0;i<totalCells;i++){
-    let cy=y, cm=m, cd, otherMonth=false;
-    if(i < firstDayOfWeek){ cd = prevDaysInMonth - firstDayOfWeek + 1 + i; cm=m-1; if(cm<0){cm=11;cy--;} otherMonth=true; }
-    else if(i >= firstDayOfWeek+daysInMonth){ cd = i - firstDayOfWeek - daysInMonth + 1; cm=m+1; if(cm>11){cm=0;cy++;} otherMonth=true; }
-    else { cd = i - firstDayOfWeek + 1; }
-    const dateStr = _schDateStr(cy,cm,cd);
-    const dow = i%7;
-    const isToday = dateStr === _schToday();
-    const isSelected = dateStr === scheduleState.selected;
-    const dayEvents = _schEventsOn(dateStr);
-    const maxShow = 2;
-    const barsHtml = dayEvents.slice(0,maxShow).map(e=>{
-      const meta = SCH_TYPE_META[e.type];
-      const isStart = e.start===dateStr, isTrueEnd = e.end===dateStr;
-      const rs = isStart || dow===0;
-      const re = isTrueEnd || dow===6 || (i===totalCells-1);
-      const cutoff = e.end===null && dow===6 && !otherMonth;
-      const label = rs ? e.icon+' '+e.title : '';
-      return `<div class="sch-bar ${meta.cls}${rs?' rs':''}${re?' re':''}${cutoff?' cutoff':''}" title="${e.title}">${label}</div>`;
-    }).join('');
-    const moreCount = dayEvents.length - maxShow;
-    const moreHtml = moreCount>0 ? `<div class="sch-more">+${moreCount}개</div>` : '';
-    cellsHtml += `<div class="sch-cell${otherMonth?' other-month':''}${isToday?' today':''}${isSelected?' selected':''}" onclick="schSelectDay('${dateStr}')">
-      <div class="sch-date-num">${cd}</div>
-      <div class="sch-bars">${barsHtml}${moreHtml}</div>
-    </div>`;
-  }
-
-  const weekdayLabels=['일','월','화','수','목','금','토'];
-  const weekdaysHtml = weekdayLabels.map((w,i)=>`<div class="sch-wd${i===0?' sun':''}${i===6?' sat':''}">${w}</div>`).join('');
-
-  const selDate = new Date(scheduleState.selected+'T00:00:00');
-  const selLabel = `${selDate.getFullYear()}년 ${selDate.getMonth()+1}월 ${selDate.getDate()}일 (${weekdayLabels[selDate.getDay()]})`;
-  const selEvents = _schEventsOn(scheduleState.selected);
-  const selHtml = selEvents.length ? selEvents.map(e=>{
-    const meta = SCH_TYPE_META[e.type];
-    return `<div class="sch-selected-item">
-      <span class="sch-selected-dot ${meta.cls}"></span>
-      <div>
-        <div class="sch-selected-body-title">${e.icon} ${e.title}</div>
-        <div class="sch-selected-body-desc">${e.desc}</div>
-      </div>
-    </div>`;
-  }).join('') : `<div class="sch-selected-empty">예정된 이벤트가 없습니다.</div>`;
-
   const sortedEvents = [...SCHEDULE_EVENTS].sort((a,b)=>a.start<b.start?-1:1);
   const listHtml = sortedEvents.map(e=>{
-    const meta = SCH_TYPE_META[e.type];
     const dateRange = e.start===e.end ? _schFmtDate(e.start) : (_schFmtDate(e.start)+' ~ '+(e.end?_schFmtDate(e.end):'진행중'));
-    return `<div class="sch-event-card" style="border-left-color:var(${e.type==='coupon'?'--gold':e.type==='hero'?'--purple':e.type==='buff'?'--red':e.type==='attendance'?'--teal':e.type==='dropup'?'--green':e.type==='pvp'?'--orange':'--blue'})">
+    return `<div class="sch-event-card" style="border-left-color:var(${SCH_TYPE_COLOR[e.type]})">
       <div class="sch-event-icon">${e.icon}</div>
       <div>
         <div class="sch-event-title">${e.title}</div>
@@ -2280,30 +2146,8 @@ function renderSchedulePage(){
 
   document.getElementById('page-schedule').innerHTML = `
     <div class="sec-title" style="margin-bottom:18px">이벤트 스케줄</div>
-    <div class="sch-top">
-      <div class="sch-nav">
-        <button class="sch-nav-btn" onclick="schChangeMonth(-1)">‹</button>
-        <div class="sch-title">${y}년 ${months[m]}</div>
-        <button class="sch-nav-btn" onclick="schChangeMonth(1)">›</button>
-        <button class="sch-today-btn" onclick="schGoToday()">오늘</button>
-      </div>
-      <div class="sch-legend">${legendHtml}</div>
-    </div>
-    <div class="sch-grid-wrap">
-      <div class="sch-weekdays">${weekdaysHtml}</div>
-      <div class="sch-grid">${cellsHtml}</div>
-    </div>
-    <div class="sch-selected-panel">
-      <div class="sch-selected-title">${selLabel}</div>
-      ${selHtml}
-    </div>
-    <div class="sec-title" style="margin-bottom:14px">전체 이벤트 목록</div>
     ${listHtml}
   `;
-}
-function _schFmtDate(dateStr){
-  const [yy,mm,dd] = dateStr.split('-');
-  return parseInt(mm)+'월 '+parseInt(dd)+'일';
 }
 
 function renderInfoPage(){
