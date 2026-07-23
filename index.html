@@ -309,27 +309,24 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .sch-wd.sun{color:#e0788a}
 .sch-wd.sat{color:#7ba3f0}
 .sch-grid{display:grid;grid-template-columns:repeat(7,1fr)}
-.sch-cell{min-height:88px;padding:6px 3px 4px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;display:flex;flex-direction:column;gap:2px}
+.sch-cell{aspect-ratio:1;min-height:52px;padding:6px 0 0;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;display:flex;flex-direction:column;align-items:center;gap:5px}
 .sch-cell:nth-child(7n){border-right:none}
 .sch-cell:hover{background:rgba(255,255,255,0.02)}
-.sch-cell.other-month{opacity:.35}
-.sch-cell.selected{background:rgba(91,138,245,.08)}
-.sch-date-num{font-size:12px;color:var(--t2);padding-left:4px;margin-bottom:1px}
-.sch-cell.today .sch-date-num{color:#fff;background:var(--blue);width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0;margin-left:2px}
-.sch-bars{display:flex;flex-direction:column;gap:2px}
-.sch-bar{font-size:10px;line-height:16px;height:16px;padding:0 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;position:relative}
-.sch-bar.rs{margin-left:2px;border-top-left-radius:5px;border-bottom-left-radius:5px}
-.sch-bar.re{margin-right:2px;border-top-right-radius:5px;border-bottom-right-radius:5px}
-.sch-bar.cutoff::after{content:'›';float:right;font-weight:700}
-.sch-more{font-size:10px;color:var(--t3);padding-left:6px;cursor:pointer}
-.sch-more:hover{color:var(--text)}
-.sch-c-coupon{background:var(--gold);color:#1c1f2b}
-.sch-c-hero{background:var(--purple);color:#fff}
-.sch-c-buff{background:var(--red);color:#fff}
-.sch-c-attendance{background:var(--teal);color:#0d2321}
-.sch-c-dropup{background:var(--green);color:#06231a}
-.sch-c-event{background:var(--blue);color:#fff}
-.sch-c-pvp{background:var(--orange);color:#2b1400}
+.sch-cell.other-month{opacity:.3}
+.sch-cell.selected{background:rgba(91,138,245,.1)}
+.sch-cell.selected .sch-date-num{border:1px solid var(--blue)}
+.sch-date-num{font-size:12.5px;color:var(--t2);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sch-cell.today .sch-date-num{color:#fff;background:var(--blue)}
+.sch-cell.today.selected .sch-date-num{border:none}
+.sch-dots{display:flex;justify-content:center;flex-wrap:wrap;gap:3px;padding:0 4px;max-width:100%}
+.sch-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.sch-c-coupon{background:var(--gold)}
+.sch-c-hero{background:var(--purple)}
+.sch-c-buff{background:var(--red)}
+.sch-c-attendance{background:var(--teal)}
+.sch-c-dropup{background:var(--green)}
+.sch-c-event{background:var(--blue)}
+.sch-c-pvp{background:var(--orange)}
 .sch-selected-panel{background:var(--s1);border:1px solid var(--border);border-radius:13px;padding:16px 18px;margin-bottom:20px}
 .sch-selected-title{font-size:13.5px;font-weight:600;margin-bottom:12px;color:var(--text)}
 .sch-selected-empty{font-size:13px;color:var(--t3);padding:8px 0}
@@ -344,9 +341,8 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .sch-event-date{font-size:11.5px;color:var(--t3);margin-top:2px}
 .sch-event-desc{font-size:12.5px;color:var(--t2);margin-top:5px;line-height:1.6}
 @media(max-width:640px){
-  .sch-cell{min-height:64px;padding:4px 2px 2px}
-  .sch-bar{font-size:9px;line-height:13px;height:13px;padding:0 3px}
-  .sch-date-num{font-size:10.5px}
+  .sch-cell{min-height:42px;padding:4px 0 0;gap:3px}
+  .sch-date-num{font-size:11px;width:19px;height:19px}
   .sch-title{font-size:15px;min-width:88px}
 }
 
@@ -2166,15 +2162,21 @@ const SCH_TYPE_META = {
   pvp:        {label:'PvP/콘텐츠', cls:'sch-c-pvp'},
 };
 const SCHEDULE_EVENTS = [
-  {id:1, type:'coupon',     icon:'🎟️', title:'쿠폰 코드 변경 (gift300 → 동뽑300장)', start:'2026-07-23', end:'2026-07-23', desc:'쿠폰 코드가 gift300에서 동뽑300장으로 변경되었습니다.'},
-  {id:2, type:'hero',       icon:'🆕', title:'신규 동료 출시',                        start:'2026-07-23', end:'2026-07-23', desc:'세부사항은 동료탭에서 확인하세요.'},
-  {id:3, type:'buff',       icon:'🔥', title:'매일 버닝부스터',                       start:'2026-07-23', end:'2026-08-12', desc:'8월 12일까지 매일 진행됩니다.'},
-  {id:4, type:'attendance', icon:'📅', title:'월간 출석체크 시작',                    start:'2026-08-01', end:null,          desc:'8월 1일부터 월간 출석체크가 시작됩니다.'},
-  {id:5, type:'dropup',     icon:'📈', title:'로미오 파티퀘스트 드랍업',              start:'2026-07-23', end:null,          desc:'7월 23일부터 로미오 파티퀘스트 드랍률이 증가합니다.'},
-  {id:6, type:'event',      icon:'💻', title:'PC클라 접속 이벤트',                    start:'2026-07-23', end:null,          desc:'7월 23일부터 PC클라이언트 접속 이벤트가 진행됩니다.'},
-  {id:7, type:'event',      icon:'🗿', title:'여명의 발자취 증표 이벤트',             start:'2026-07-27', end:null,          desc:'7월 27일부터 진행됩니다.'},
-  {id:8, type:'pvp',        icon:'⚔️', title:'콜로세움 오픈',                         start:'2026-07-28', end:null,          desc:'7월 28일부터 콜로세움이 시작됩니다.'},
-  {id:9, type:'dropup',     icon:'📈', title:'자쿰/혼테일 드랍업',                    start:'2026-08-03', end:null,          desc:'8월 3일부터 자쿰/혼테일 드랍률이 증가합니다.'},
+  {id:1,  type:'coupon',     icon:'🎟️', title:'쿠폰 gift300 (동료 300뽑기권 지급)', start:'2026-07-23', end:'2026-09-02', desc:'쿠폰 번호 gift300 입력 시 동료 300뽑기권을 지급합니다. 9월 2일까지 사용 가능합니다.'},
+  {id:2,  type:'hero',       icon:'🆕', title:'신규 동료 특별 패시브 스킬 이벤트',      start:'2026-07-23', end:'2026-09-03', desc:'세부사항은 동료탭에서 확인하세요. 9월 3일까지 진행됩니다.'},
+  {id:3,  type:'buff',       icon:'🔥', title:'매일 버닝부스터',                       start:'2026-07-23', end:'2026-08-12', desc:'8월 12일까지 매일 진행됩니다.'},
+  {id:4,  type:'attendance', icon:'📅', title:'월간 출석체크 시작',                    start:'2026-08-01', end:null,          desc:'8월 1일부터 월간 출석체크가 시작됩니다.'},
+  {id:5,  type:'buff',       icon:'🔥', title:'로미오와 줄리엣 파티퀘스트 버닝UP',      start:'2026-07-23', end:'2026-08-05', desc:'8월 5일까지 로미오와 줄리엣 파티퀘스트 버닝업이 진행됩니다.'},
+  {id:6,  type:'event',      icon:'💻', title:'PC클라 접속 이벤트',                    start:'2026-07-23', end:'2026-08-12', desc:'7월 23일부터 8월 12일까지 PC클라이언트 접속 이벤트가 진행됩니다.'},
+  {id:7,  type:'event',      icon:'🗿', title:'여명의 발자취 증표 이벤트',             start:'2026-07-27', end:null,          desc:'7월 27일부터 진행됩니다.'},
+  {id:8,  type:'pvp',        icon:'⚔️', title:'콜로세움 오픈',                         start:'2026-07-28', end:null,          desc:'7월 28일부터 콜로세움이 시작됩니다.'},
+  {id:9,  type:'dropup',     icon:'📈', title:'자쿰/혼테일 드랍업',                    start:'2026-08-03', end:null,          desc:'8월 3일부터 자쿰/혼테일 드랍률이 증가합니다.'},
+  {id:10, type:'hero',       icon:'🌱', title:'신규 캐릭터 성장 이벤트 1',             start:'2026-07-23', end:'2026-09-23', desc:'9월 23일까지 진행됩니다. (시작일은 추정치이니 정확한 날짜 확인 부탁드려요)'},
+  {id:11, type:'hero',       icon:'🌱', title:'신규 캐릭터 성장 이벤트 2',             start:'2026-07-23', end:'2026-09-23', desc:'9월 23일까지 진행됩니다. (시작일은 추정치이니 정확한 날짜 확인 부탁드려요)'},
+  {id:12, type:'event',      icon:'🍬', title:'달콤한 큐브 축제',                      start:'2026-07-23', end:'2026-09-02', desc:'9월 2일까지 진행됩니다. (시작일은 추정치이니 정확한 날짜 확인 부탁드려요)'},
+  {id:13, type:'attendance', icon:'📅', title:'시그너스 15일 출석 이벤트',             start:'2026-07-23', end:'2026-08-12', desc:'8월 12일까지 진행되는 시그너스 15일 출석 이벤트입니다.'},
+  {id:14, type:'event',      icon:'🛡️', title:'기사단의 펜던트 강화 이벤트',           start:'2026-07-23', end:'2026-09-02', desc:'9월 2일까지 진행됩니다.'},
+  {id:15, type:'event',      icon:'🏪', title:'시그너스 상점',                         start:'2026-07-23', end:'2026-09-04', desc:'9월 4일까지 운영되는 시그너스 상점입니다.'},
 ];
 function _schToday(){ const t=new Date(); return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0'); }
 const _schTodayReal = new Date();
@@ -2216,24 +2218,16 @@ function renderSchedulePage(){
     else if(i >= firstDayOfWeek+daysInMonth){ cd = i - firstDayOfWeek - daysInMonth + 1; cm=m+1; if(cm>11){cm=0;cy++;} otherMonth=true; }
     else { cd = i - firstDayOfWeek + 1; }
     const dateStr = _schDateStr(cy,cm,cd);
-    const dow = i%7;
     const isToday = dateStr === _schToday();
     const isSelected = dateStr === scheduleState.selected;
     const dayEvents = _schEventsOn(dateStr);
-    const maxShow = 3;
-    const barsHtml = dayEvents.slice(0,maxShow).map(e=>{
+    const dotsHtml = dayEvents.map(e=>{
       const meta = SCH_TYPE_META[e.type];
-      const isStart = e.start===dateStr, isTrueEnd = e.end===dateStr;
-      const rs = isStart || dow===0;
-      const re = isTrueEnd || dow===6 || (i===totalCells-1);
-      const cutoff = e.end===null && dow===6 && !otherMonth;
-      return `<div class="sch-bar ${meta.cls}${rs?' rs':''}${re?' re':''}${cutoff?' cutoff':''}" title="${e.title}">${isStart||dow===0?e.icon+' '+e.title:' '}</div>`;
+      return `<span class="sch-dot ${meta.cls}" title="${e.title}"></span>`;
     }).join('');
-    const moreCount = dayEvents.length - maxShow;
-    const moreHtml = moreCount>0 ? `<div class="sch-more">+${moreCount}개</div>` : '';
     cellsHtml += `<div class="sch-cell${otherMonth?' other-month':''}${isToday?' today':''}${isSelected?' selected':''}" onclick="schSelectDay('${dateStr}')">
       <div class="sch-date-num">${cd}</div>
-      <div class="sch-bars">${barsHtml}${moreHtml}</div>
+      <div class="sch-dots">${dotsHtml}</div>
     </div>`;
   }
 
